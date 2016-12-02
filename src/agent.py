@@ -7,7 +7,13 @@ used in a very weak sense) new artifacts to it from domain.
 
 from creamas.core import CreativeAgent, Environment, Simulation, Artifact
 
+from model import *
+
 import logging
+import random
+
+import matplotlib.image as im
+import matplotlib.pyplot as pl
 
 # Logging setup. This is simplified setup as all agents use the same logger.
 # It _will_ cause some problems in asynchronous settings, especially if you
@@ -60,7 +66,7 @@ class FoolPainterAgent(CreativeAgent):
     from a given artwork or randomly otherwise.
     '''
 
-    def __init__(self, env):
+    def __init__(self, env, reference):
         '''
         :param env:
             subclass of :py:class:`~creamas.core.environment.Environment`
@@ -69,6 +75,20 @@ class FoolPainterAgent(CreativeAgent):
         super().__init__(env)
 
         self.mem = ListMemory(20)
+
+        self.color_palette = create_model(reference)
+        self.brush_size = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
+        color = np.array(self.pickColors(30))
+        pl.imshow(color,  interpolation='none')
+        pl.show()
+
+
+    def pickColors (self, n):
+        # Return n most frequent colors from the color_palette.
+        colors = np.array([sorted(self.color_palette, key=self.color_palette.get)[:n]])
+
+        return colors
+
 
     def evaluate(self, artifact):
         '''Evaluate given artifact with respect to the agent's  memory
@@ -172,4 +192,4 @@ class FoolPainterAgent(CreativeAgent):
 
 if __name__ == "__main__":
     env = Environment.create(('localhost', 5555))
-    agent = FoolPainterAgent(env)
+    agent = FoolPainterAgent(env, reference="../media/starring-night.jpg")
