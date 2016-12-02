@@ -1,5 +1,6 @@
 from creamas.core import Environment
 import numpy as np
+import matplotlib.pyplot as pl
 
 class CanvasEnvironment(Environment):
 
@@ -17,14 +18,23 @@ class CanvasEnvironment(Environment):
         :returs: A white canvas
         '''
         self._canvas = np.empty(shape)
-        self._canvas.fill(255)
+        self._canvas.fill(1.0)
+
         # Changing opacity to 1
         if shape[2] == 4:
-            self._canvas.T[3].fill(1)
+            self._canvas.T[3].fill(1.0)
         return self._canvas
+
+    def viewCanvas(self):
+        pl.imshow(self._canvas)
+        pl.show()
+        return
 
 # Example usage
 if __name__ == "__main__":
     env = CanvasEnvironment.create(("localhost", 5555))
     # initializes a white canvas with size 512x512
-    env.init_canvas((512,512,3))
+    env.init_canvas((512,512,4))
+    print(env._canvas)
+    env.viewCanvas()
+
