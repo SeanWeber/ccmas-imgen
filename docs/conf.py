@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # ccmas-imgen documentation build configuration file, created by
-# sphinx-quickstart on Sun Dec  4 18:49:02 2016.
+# sphinx-quickstart on Sun Dec  4 19:17:39 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -33,7 +33,6 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
-    'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
 
@@ -51,7 +50,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'ccmas-imgen'
-copyright = u'2016, csvreel, mihassin, SeanWeber, tomas-duda'
+copyright = u'2016, ccmas-imgen'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -204,7 +203,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index', 'ccmas-imgen.tex', u'ccmas-imgen Documentation',
-   u'csvreel, mihassin, SeanWeber, tomas-duda', 'manual'),
+   u'ccmas-imgen', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -234,7 +233,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'ccmas-imgen', u'ccmas-imgen Documentation',
-     [u'csvreel, mihassin, SeanWeber, tomas-duda'], 1)
+     [u'ccmas-imgen'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -248,7 +247,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'ccmas-imgen', u'ccmas-imgen Documentation',
-   u'csvreel, mihassin, SeanWeber, tomas-duda', 'ccmas-imgen', 'One line description of project.',
+   u'ccmas-imgen', 'ccmas-imgen', 'One line description of project.',
    'Miscellaneous'),
 ]
 
