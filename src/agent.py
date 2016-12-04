@@ -82,7 +82,7 @@ class FoolPainterAgent(CreativeAgent):
         self.color_palette       = np.array(self.pickColors(self.color_palette_size))
 
         self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
-        self.brush               = Brush(5, reference)
+        self.brush               = Brush(self.brush_size, reference)
 
         plt.imshow(self.color_palette, interpolation='None')
         plt.show()
@@ -155,8 +155,16 @@ class FoolPainterAgent(CreativeAgent):
         Stroke are generated mixing data memorized of patterns and colors.
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         '''
-
-        stroke = None
+        random_color = random.choice(self.color_palette[0])
+        stroke = np.empty((self.brush_size, self.brush_size, 4))
+        for row_idx in range(len(self.brush.pattern)):
+            for col_idx in range(len(self.brush.pattern[row_idx])):
+                for rgb_ch in range(0, 3):
+                    stroke[row_idx][col_idx][rgb_ch] = random_color[rgb_ch]
+                stroke[row_idx][col_idx][3] = self.brush.pattern[row_idx][col_idx]    
+        # Dbg
+        plt.imshow(stroke, interpolation='None')
+        plt.show()
         return Artifact(self, stroke, domain=str)
 
 
@@ -198,3 +206,4 @@ class FoolPainterAgent(CreativeAgent):
 if __name__ == "__main__":
     env = Environment.create(('localhost', 5555))
     agent = FoolPainterAgent(env, reference="../media/starring-night.jpg")
+    agent.generate()
