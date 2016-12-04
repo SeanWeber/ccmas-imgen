@@ -8,6 +8,7 @@ used in a very weak sense) new artifacts to it from domain.
 from creamas.core import CreativeAgent, Environment, Simulation, Artifact
 
 from model import *
+from brush import *
 
 import logging
 import random
@@ -76,18 +77,22 @@ class FoolPainterAgent(CreativeAgent):
 
         self.mem = ListMemory(20)
 
-        self.color_palette = create_model(reference)
-        self.brush_size = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
-        color = np.array(self.pickColors(30))
-        pl.imshow(color,  interpolation='none')
-        pl.show()
+        self.color_reference     = create_model(reference)
+        self.color_palette_size  = 30
+        self.color_palette       = np.array(self.pickColors(self.color_palette_size))
 
+        self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
+        self.brush               = Brush(5, reference)
+
+        plt.imshow(self.color_palette, interpolation='None')
+        plt.show()
+
+        plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
+        plt.show()
 
     def pickColors (self, n):
         # Return n most frequent colors from the color_palette.
-        colors = np.array([sorted(self.color_palette, key=self.color_palette.get)[:n]])
-
-        return colors
+        return np.array([sorted(self.color_reference, key=self.color_reference.get)[:n]])
 
 
     def evaluate(self, artifact):

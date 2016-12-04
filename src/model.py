@@ -13,7 +13,6 @@ def create_model(file_name):
 
     # Normalization of data to decimal (0.0 - 1.0) representation
     img=img.astype('float16')
-    print(img)
     if img.max() > 1.0:
         img /= 255.0
 
