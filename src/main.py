@@ -8,8 +8,7 @@ if __name__ == "__main__":
     env.init_canvas((64, 64, 4))
 
     # Initialize the agents
-    agent_env = agent.Environment.create(('localhost', 5556))
-    fool_agent = agent.FoolPainterAgent(agent_env, reference="../media/starring-night.jpg")
+    fool_agent = agent.FoolPainterAgent(env, reference="../media/starring-night.jpg")
 
     # Run the agents
     artifact = fool_agent.generate()
