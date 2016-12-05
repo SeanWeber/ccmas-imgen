@@ -85,10 +85,10 @@ class FoolPainterAgent(CreativeAgent):
         self.brush               = Brush(self.brush_size, reference)
 
         plt.imshow(self.color_palette, interpolation='None')
-        plt.show()
+        #plt.show()
 
         plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
-        plt.show()
+        #plt.show()
 
     def pickColors (self, n):
         # Return n most frequent colors from the color_palette.
@@ -164,7 +164,7 @@ class FoolPainterAgent(CreativeAgent):
                 stroke[row_idx][col_idx][3] = self.brush.pattern[row_idx][col_idx]    
         # Dbg
         plt.imshow(stroke, interpolation='None')
-        plt.show()
+        #plt.show()
         return Artifact(self, stroke, domain=str)
 
 

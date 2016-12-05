@@ -30,6 +30,14 @@ class CanvasEnvironment(Environment):
         pl.show()
         return
 
+    def add_stroke(self, stroke, position):
+        x_offset = position[0]
+        y_offset = position[1]
+
+        for x in range(len(stroke)):
+            for y in range(len(stroke[x])):
+                self._canvas[x + x_offset][y + y_offset] = stroke[x][y]
+
 # Example usage
 if __name__ == "__main__":
     env = CanvasEnvironment.create(("localhost", 5555))
