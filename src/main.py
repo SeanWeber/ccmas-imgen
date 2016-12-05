@@ -1,21 +1,24 @@
 import agent
 import canvas
-import numpy as np
+import os
+import random
 
 if __name__ == "__main__":
-    # initializes a white canvas with size 512x512
+    # initializes a white canvas
     env = canvas.CanvasEnvironment.create(("localhost", 5555))
     env.init_canvas((64, 64, 4))
 
     # Initialize the agents
-    fool_agent = agent.FoolPainterAgent(env, reference="../media/starring-night.jpg")
+    for i in range(5):
+        reference_image = "../media/" + random.choice(os.listdir("../media/"))
+        fool = agent.FoolPainterAgent(env, reference=reference_image)
 
-    # Run the agents
-    artifact = fool_agent.generate()
+        # Run the agents
+        artifact = fool.generate()
 
-    position = [20, 50]
-    env.add_stroke(artifact._obj, position)
+        # TODO move this to the agent class
+        position = [random.randint(0, 59), random.randint(0, 59)]
+        env.add_stroke(artifact._obj, position)
 
     # View the canvas
-    print(env._canvas)
     env.viewCanvas()
