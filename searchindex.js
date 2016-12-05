@@ -1,0 +1,1 @@
+Search.setIndex({envversion:42,terms:{index:0,search:0,modul:0,content:0,imgen:1,ccma:1,page:0},objtypes:{},objnames:{},filenames:["index","includeme"],titles:["Welcome to ccmas-imgen&#8217;s documentation!","&lt;no title&gt;"],objects:{},titleterms:{welcom:0,indic:0,imgen:0,tabl:0,document:0,ccma:0}})
