@@ -6,6 +6,8 @@
 Welcome to ccmas-imgen's documentation!
 =======================================
 
+Creative image generation project.
+
 Contents:
 
 .. toctree::
