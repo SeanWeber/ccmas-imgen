@@ -1,4 +1,5 @@
-from creamas.core import Environment import numpy as np
+from creamas.core import Environment
+import numpy as np
 import matplotlib.pyplot as pl
 
 import logging
