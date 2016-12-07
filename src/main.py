@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     # Initialize the agents
     for i in range(3):
-        reference_image = "../media/" + random.choice(os.listdir("../media/"))
+        reference_image = "../inspiration/" + random.choice(os.listdir("../inspiration/"))
         fool = agent.FoolPainterAgent(env, reference=reference_image)
 
     # Run the simulation
