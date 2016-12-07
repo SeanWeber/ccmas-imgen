@@ -76,6 +76,7 @@ class FoolPainterAgent(CreativeAgent):
         super().__init__(env)
 
         self.mem = ListMemory(20)
+        self.n = 1
 
         self.color_reference     = create_model(reference)
         self.color_palette_size  = 30
@@ -106,7 +107,7 @@ class FoolPainterAgent(CreativeAgent):
 
         value, value_framing     = self.value(artifact)
         novelty, novelty_framing = self.novelty(artifact)
-        surpris, surpris_framing = self.surpris(artifact)
+        surpris, surpris_framing = self.surprisingness(artifact)
 
         framing = {'value': value_framing, 'novelty':novelty_framing, 'suprisingness' : surpris_framing}
         evaluation = (value + novelty + surpris) / 3
