@@ -81,7 +81,7 @@ class FoolPainterAgent(CreativeAgent):
         self.color_palette_size  = 30
         self.color_palette       = np.array(self.pickColors(self.color_palette_size))
 
-        self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
+        self.brush_size          = random.randint(2,8) # Grid of NxN ; N = random value from 3 to 5.
         self.brush               = Brush(self.brush_size, reference)
 
         plt.imshow(self.color_palette, interpolation='None')
@@ -146,8 +146,22 @@ class FoolPainterAgent(CreativeAgent):
             stroke giving the minimum surprisingness.
         '''
 
-        surpris, matching_stroke = 0, None;
+        surpris, matching_stroke = 0, None
         return surpris, matching_stroke
+
+    def similarity(self, imgA, imgB):
+        '''Given two images of the same size, this function compute the similarity of the pixel
+        values. The function compute the differences of RGB values of a pixel and weight it with
+        the alpha value.
+
+        :param imgA:
+        :param imgB:
+        :return:
+        '''
+
+
+
+
 
 
     def generate(self):
@@ -156,15 +170,19 @@ class FoolPainterAgent(CreativeAgent):
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         '''
         random_color = random.choice(self.color_palette[0])
-        stroke = np.empty((self.brush_size, self.brush_size, 4))
+        stroke = []
+
         for row_idx in range(len(self.brush.pattern)):
+            stroke_line = []
             for col_idx in range(len(self.brush.pattern[row_idx])):
-                for rgb_ch in range(0, 3):
-                    stroke[row_idx][col_idx][rgb_ch] = random_color[rgb_ch]
-                stroke[row_idx][col_idx][3] = self.brush.pattern[row_idx][col_idx]    
+                stroke_line.append(np.insert(random_color, 3, self.brush.pattern[row_idx][col_idx]))
+            stroke.append(stroke_line)
+
+        stroke = np.array(stroke)
+
         # Dbg
         plt.imshow(stroke, interpolation='None')
-        #plt.show()
+        plt.show()
         return Artifact(self, stroke, domain=str)
 
 
