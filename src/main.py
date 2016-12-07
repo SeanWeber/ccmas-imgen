@@ -21,4 +21,4 @@ if __name__ == "__main__":
     sim.end()
 
     # View the canvas
-    env.viewCanvas()
+    env.view_canvas()
