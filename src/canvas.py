@@ -19,10 +19,6 @@ class CanvasEnvironment(Environment):
         '''
         self._canvas = np.empty(shape)
         self._canvas.fill(1.0)
-
-        # Changing opacity to 1
-        if shape[2] == 4:
-            self._canvas.T[3].fill(1.0)
         return self._canvas
 
     def viewCanvas(self):
