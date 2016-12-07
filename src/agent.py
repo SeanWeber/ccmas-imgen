@@ -23,7 +23,6 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
-
 class ListMemory():
     '''Simple list memory which stores all seen artifacts as is into a list.
     '''
@@ -90,6 +89,8 @@ class FoolPainterAgent(CreativeAgent):
 
         plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
         #plt.show()
+
+        logger.debug("Agent started: {}".format(reference))
 
     def pickColors (self, n):
         # Return n most frequent colors from the color_palette.
