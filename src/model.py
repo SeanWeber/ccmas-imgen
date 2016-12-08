@@ -20,7 +20,7 @@ def create_model(file_name):
     rgbs = {}
     for i in img:
         for j in i:
-            rgb = tuple(j)
+            rgb = tuple(j)[0:3]
             if rgb not in rgbs:
                 rgbs[rgb] = 1.0
             else:
