@@ -8,11 +8,11 @@ from creamas.core import Simulation
 if __name__ == "__main__":
     # initializes a white canvas
     env = canvas.CanvasEnvironment.create(("localhost", 5555))
-    env.init_canvas((64, 64, 4))
+    env.init_canvas((640, 640, 4))
 
     # Initialize the agents
-    for i in range(3):
-        reference_image = "../inspiration/" + random.choice(os.listdir("../inspiration/"))
+    for i in range(1):
+        reference_image = "../media/" + random.choice(os.listdir("../media/"))
         fool = agent.FoolPainterAgent(env, reference=reference_image)
 
     # Run the simulation

@@ -174,21 +174,23 @@ class FoolPainterAgent(CreativeAgent):
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         """
         random_color = random.choice(self.color_palette[0])
-        stroke = StrokeArtifact(self, [])
+        stroke = []
 
         for row_idx in range(len(self.brush.pattern)):
             stroke_line = []
             for col_idx in range(len(self.brush.pattern[row_idx])):
                 stroke_line.append(np.insert(random_color, 3, self.brush.pattern[row_idx][col_idx]))
-            stroke.obj.append(stroke_line)
+            stroke.append(stroke_line)
 
-        stroke.add_position([0,0])
+        stroke = np.array(stroke)
+        strokeArt = StrokeArtifact(self, stroke)
+        strokeArt.add_position([0,0])
 
         # # Dbg
         # plt.imshow(stroke, interpolation='None')
         # plt.show()
 
-        return stroke
+        return strokeArt
 
     def invent(self, n=20):
         """Invent a new stroke.
@@ -227,4 +229,6 @@ class FoolPainterAgent(CreativeAgent):
 if __name__ == "__main__":
     env = Environment.create(('localhost', 5555))
     agent = FoolPainterAgent(env, reference="../media/starring-night.jpg")
+    agent.generate()
+
 

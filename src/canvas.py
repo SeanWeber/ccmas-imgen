@@ -34,6 +34,9 @@ class CanvasEnvironment(Environment):
         img = Image.fromarray(integer_canvas, 'RGBA')
         img.save('../output/result.png')
 
+        pl.imshow(img, interpolation='None')
+        pl.show()
+
         return
 
     def add_stroke(self, stroke, position):
