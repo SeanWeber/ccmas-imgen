@@ -9,9 +9,11 @@ from creamas.core import CreativeAgent, Environment, Simulation, Artifact
 
 from model import *
 from brush import *
+from stroke import *
 
 import logging
 import random
+
 
 import matplotlib.image as im
 import matplotlib.pyplot as pl
@@ -85,9 +87,8 @@ class FoolPainterAgent(CreativeAgent):
         self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
         self.brush               = Brush(self.brush_size, reference)
 
-        plt.imshow(self.color_palette, interpolation='None')
-
-        plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
+        # plt.imshow(self.color_palette, interpolation='None')
+        # plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
 
         logger.debug("Agent started: {}".format(reference))
 
@@ -182,12 +183,14 @@ class FoolPainterAgent(CreativeAgent):
             stroke.append(stroke_line)
 
         stroke = np.array(stroke)
+        strokeArt = StrokeArtifact(self, stroke)
+        strokeArt.add_position([0,0])
 
         # # Dbg
-        plt.imshow(stroke, interpolation='None')
-        plt.show()
+        # plt.imshow(stroke, interpolation='None')
+        # plt.show()
 
-        return Artifact(self, stroke, domain=str)
+        return strokeArt
 
     def invent(self, n=20):
         """Invent a new stroke.
