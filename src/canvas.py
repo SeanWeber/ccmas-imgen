@@ -52,15 +52,18 @@ class CanvasEnvironment(Environment):
         BLU = 2
         ALPHA = 3
 
-        transparency = stroke[ALPHA]
-
         self._canvas[x][y][RED] = stroke[RED] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][RED]
         self._canvas[x][y][GRN] = stroke[GRN] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][GRN]
         self._canvas[x][y][BLU] = stroke[BLU] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][BLU]
 
+        # Sanity check
         self._canvas[x][y][RED] = min(self._canvas[x][y][RED], 1.0)
         self._canvas[x][y][GRN] = min(self._canvas[x][y][GRN], 1.0)
         self._canvas[x][y][BLU] = min(self._canvas[x][y][BLU], 1.0)
+
+        self._canvas[x][y][RED] = max(self._canvas[x][y][RED], 0.0)
+        self._canvas[x][y][GRN] = max(self._canvas[x][y][GRN], 0.0)
+        self._canvas[x][y][BLU] = max(self._canvas[x][y][BLU], 0.0)
 
     def vote(self, age):
         artifacts = self.perform_voting(method='mean')
