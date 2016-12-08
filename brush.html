@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>My Title &#8212; CCMAS-IMGEN 1 documentation</title>
+    <title>5.2. brush module &#8212; CCMAS-IMGEN 1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,6 +27,8 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5.3. canvas module" href="canvas.html" />
+    <link rel="prev" title="5.1. agent module" href="agent.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -42,9 +44,25 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="my-title">
-<h1>My Title<a class="headerlink" href="#my-title" title="Permalink to this headline">¶</a></h1>
-<p># ccmas-imgen</p>
+  <div class="section" id="module-brush">
+<span id="brush-module"></span><h1>5.2. brush module<a class="headerlink" href="#module-brush" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="brush.Brush">
+<em class="property">class </em><code class="descclassname">brush.</code><code class="descname">Brush</code><span class="sig-paren">(</span><em>size=5</em>, <em>reference=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/brush.html#Brush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brush.Brush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A brush used by agent to paint a picture.</p>
+<dl class="method">
+<dt id="brush.Brush.generate_pattern">
+<code class="descname">generate_pattern</code><span class="sig-paren">(</span><em>reference</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/brush.html#Brush.generate_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brush.Brush.generate_pattern" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="brush.rgb2gray">
+<code class="descclassname">brush.</code><code class="descname">rgb2gray</code><span class="sig-paren">(</span><em>rgb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/brush.html#rgb2gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brush.rgb2gray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -63,18 +81,30 @@
 
 
 <h3>Navigation</h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="project.html">1. Project Goals</a></li>
 <li class="toctree-l1"><a class="reference internal" href="implementation.html">2. Implementation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="evaluation.html">3. Evaluation and Results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">4. Set-up guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="agent.html">5.1. agent module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.2. brush module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">5.3. canvas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">5.4. main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">5.5. model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stroke.html">5.6. stroke module</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">5. src</a><ul>
+      <li>Previous: <a href="agent.html" title="previous chapter">5.1. agent module</a></li>
+      <li>Next: <a href="canvas.html" title="next chapter">5.3. canvas module</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -100,7 +130,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
       
       |
-      <a href="_sources/includeme.rst.txt"
+      <a href="_sources/brush.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

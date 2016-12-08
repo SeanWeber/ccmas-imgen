@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to ccmas-imgen’s documentation! &#8212; ccmas-imgen 1 documentation</title>
+    <title>CCMAS-IMGEN: Creative image generation &#8212; CCMAS-IMGEN 1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,7 +27,7 @@
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="includeme.html" />
+    <link rel="next" title="1. Project goals" href="project.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -43,11 +43,45 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-ccmas-imgen-s-documentation">
-<h1>Welcome to ccmas-imgen&#8217;s documentation!<a class="headerlink" href="#welcome-to-ccmas-imgen-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Creative image generation project.</p>
-<p>Contents:</p>
+  <div class="section" id="ccmas-imgen-creative-image-generation">
+<h1>CCMAS-IMGEN: Creative image generation<a class="headerlink" href="#ccmas-imgen-creative-image-generation" title="Permalink to this headline">¶</a></h1>
+<p>This documentation serves as a comprehensive guide through the semestral work CCMAS-IMGEN that was developed during the Computational creativity course at the University of Helsinki (fall 2016).</p>
+<p>The first part outlines the overall goals of this project and defines the most important elements of the system. The second chapter describes the implementation of the system, difficulties that were encountered during the development process and used libraries. The subsequent section shows some of the results that we achieved. The fourth part describes the steps that are necessary in order to install and run the application. The final section serves as a list of implemented modules and links to their API documentation.</p>
+<p>Team members: Marko Hassinen, Sean Weber, Tomas Duda, Carlos Santana Vega.</p>
+<p><a class="reference external" href="https://github.com/ccmas-imgen/ccmas-imgen">Link to GitHub repository</a></p>
+<p>Table of contents:</p>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="project.html">1. Project Goals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="project.html#why-is-the-system-creative">1.1. Why is the system creative?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project.html#elements-of-the-system">1.2. Elements of the system</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">2. Implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#used-libraries">2.1. Used Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html#structure-of-implementation">2.2. Structure of implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">3. Evaluation and Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="evaluation.html#examples-of-generated-images">3.1. Examples of generated images</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Set-up guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#requirements">4.1. Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#installation-guide">4.2. Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#running-the-application">4.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="agent.html">5.1. agent module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brush.html">5.2. brush module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">5.3. canvas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">5.4. main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">5.5. model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stroke.html">5.6. stroke module</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -65,26 +99,32 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to ccmas-imgen&#8217;s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<h1 class="logo"><a href="#">CCMAS-IMGEN</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="project.html">1. Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">2. Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">3. Evaluation and Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Set-up guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a></li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="includeme.html" title="next chapter">&lt;no title&gt;</a></li>
+      <li>Next: <a href="project.html" title="next chapter">1. Project goals</a></li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">

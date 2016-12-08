@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Project goals &#8212; CCMAS-IMGEN 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2. Implementation" href="implementation.html" />
+    <link rel="prev" title="CCMAS-IMGEN: Creative image generation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="project-goals">
+<h1>1. Project goals<a class="headerlink" href="#project-goals" title="Permalink to this headline">¶</a></h1>
+<p>The main goal of our project is to create a creative multi-agent system that paints images.</p>
+<p>Each agent receives an image from the inspiring set. Based on the image, an agent generates a palette of colors and a set of brushes.</p>
+<p>Agents share a common canvas. In every iteration, each agent draws a stroke in the canvas using one of its brushes and a color from its palette. Every agent&#8217;s goal is to propagate the style of &#8216;his&#8217; image into the final painting.</p>
+<p>The system uses two-level evaluation. Firstly, each agent is able to evaluate value, novelty and surprisingness of a stroke. Secondly, the environment is able to estimate the quality of the agents&#8217; painting. This allows us to compare results from different sets of agents (and different runs).</p>
+<p>This process is visualised in the diagram.</p>
+<p>TBA: how does an agent choose a position of its stroke in the canvas?
+TBA: describe the evaluation process in detail</p>
+<img alt="_images/diagram.png" src="_images/diagram.png" />
+<div class="section" id="why-is-the-system-creative">
+<h2>1.1. Why is the system creative?<a class="headerlink" href="#why-is-the-system-creative" title="Permalink to this headline">¶</a></h2>
+<p>TBA</p>
+</div>
+<div class="section" id="elements-of-the-system">
+<h2>1.2. Elements of the system<a class="headerlink" href="#elements-of-the-system" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="agent">
+<h3>1.2.1. Agent<a class="headerlink" href="#agent" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>&#8220;Fool with brush&#8221;.</li>
+<li>The process performed by an agent is visualised in the diagram below.</li>
+</ul>
+<img alt="_images/agent.png" src="_images/agent.png" />
+</div>
+<div class="section" id="artifact-stroke">
+<h3>1.2.2. Artifact (= Stroke)<a class="headerlink" href="#artifact-stroke" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Modification of the shared canvas.</li>
+<li>A stroke is created by combining a brush with a color from agent&#8217;s palette.</li>
+</ul>
+<img alt="_images/stroke.png" src="_images/stroke.png" />
+</div>
+<div class="section" id="environment-canvas">
+<h3>1.2.3. Environment (= Canvas)<a class="headerlink" href="#environment-canvas" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A shared canvas. Agents paint their strokes in the canvas.</li>
+</ul>
+</div>
+<div class="section" id="memory-model">
+<h3>1.2.4. Memory model<a class="headerlink" href="#memory-model" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The system uses a simple ListMemory model.</li>
+<li>TBA</li>
+</ul>
+</div>
+<div class="section" id="interactions">
+<h3>1.2.5. Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>TBA</li>
+</ul>
+</div>
+<div class="section" id="inspiring-set">
+<h3>1.2.6. Inspiring set<a class="headerlink" href="#inspiring-set" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A predefined set of images. An agent defines its brushes and palette based on an image from this set.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CCMAS-IMGEN</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">1. Project Goals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-is-the-system-creative">1.1. Why is the system creative?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#elements-of-the-system">1.2. Elements of the system</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">2. Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">3. Evaluation and Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Set-up guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">CCMAS-IMGEN: Creative image generation</a></li>
+      <li>Next: <a href="implementation.html" title="next chapter">2. Implementation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, ccmas-imgen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/project.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

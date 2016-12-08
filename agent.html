@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1. agent module &#8212; CCMAS-IMGEN 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5.2. brush module" href="brush.html" />
+    <link rel="prev" title="5. src" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-agent">
+<span id="agent-module"></span><h1>5.1. agent module<a class="headerlink" href="#module-agent" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-mas_memory"></span><p>An example of an agent&#8217;s memory model and how an agent can learn (learn here is
+used in a very weak sense) new artifacts to it from domain.</p>
+<dl class="class">
+<dt id="agent.FoolPainterAgent">
+<em class="property">class </em><code class="descclassname">agent.</code><code class="descname">FoolPainterAgent</code><span class="sig-paren">(</span><em>env</em>, <em>reference</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">creamas.core.agent.CreativeAgent</span></code></p>
+<p>A sample agent implementation.
+Agent invents new strokes by combination of brushes patterns and palette of colours that it has learned
+from a given artwork or randomly otherwise.</p>
+<dl class="method">
+<dt id="agent.FoolPainterAgent.act">
+<code class="descname">act</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.act"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.act" title="Permalink to this definition">¶</a></dt>
+<dd><p>Agent acts by inventing new strokes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate given artifact with respect to the agent&#8217;s  memory
+and how useful it if for the assigned job.
+:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
+:returns:</p>
+<blockquote>
+<div>(evaluation, framing)-tuple, the framing is the combined framing of
+both the value and novelty.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.generate">
+<code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.generate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a new stroke.
+Stroke are generated mixing data memorized of patterns and colors.
+:returns: a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.invent">
+<code class="descname">invent</code><span class="sig-paren">(</span><em>n=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.invent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.invent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invent a new stroke.
+Generates multiple (n) strokes and selects the one with the highest
+evaluation.
+:param int n: Number of strokes to consider
+:returns:</p>
+<blockquote>
+<div>a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> and its
+evaluation.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.novelty">
+<code class="descname">novelty</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.novelty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the novelty of a given artifact with respect to the artifacts
+in the agent&#8217;s memory.
+:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
+:returns:</p>
+<blockquote>
+<div>(novelty, word)-tuple, containing both the novelty value and the
+word giving the minimum novelty.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.pick_colors">
+<code class="descname">pick_colors</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.pick_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.pick_colors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.similarity">
+<code class="descname">similarity</code><span class="sig-paren">(</span><em>imgA</em>, <em>imgB</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given two images of the same size, this function compute the similarity of the pixel
+values. The function compute the differences of RGB values of a pixel and weight it with
+the alpha value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>imgA</strong> &#8211; </li>
+<li><strong>imgB</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.surprisingness">
+<code class="descname">surprisingness</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.surprisingness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.surprisingness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the surprisingness of a given artifact with respect to the artifacts
+in the agent&#8217;s memory.
+:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
+:returns:</p>
+<blockquote>
+<div>(novelty, word)-tuple, containing both the surprisingness value and the
+stroke giving the minimum surprisingness.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.value">
+<code class="descname">value</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the value of a given artifact with respect to the stroke the
+agent has in its vocabulary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(evaluation, stroke)-tuple, containing both the evaluation and the
+stroke giving the maximum evaluation</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="agent.ListMemory">
+<em class="property">class </em><code class="descclassname">agent.</code><code class="descname">ListMemory</code><span class="sig-paren">(</span><em>capacity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#ListMemory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.ListMemory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Simple list memory which stores all seen artifacts as is into a list.</p>
+<dl class="attribute">
+<dt id="agent.ListMemory.artifacts">
+<code class="descname">artifacts</code><a class="headerlink" href="#agent.ListMemory.artifacts" title="Permalink to this definition">¶</a></dt>
+<dd><p>The artifacts currently in the memory.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="agent.ListMemory.capacity">
+<code class="descname">capacity</code><a class="headerlink" href="#agent.ListMemory.capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of artifacts in the memory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.ListMemory.memorize">
+<code class="descname">memorize</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#ListMemory.memorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.ListMemory.memorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Memorize an artifact into the memory.
+If the artifact is already in the memory, does nothing. If memory
+is full and a new artifact is memorized, forgets the oldest artifact.
+:param artifact: Artifact to be learned.
+:type artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">CCMAS-IMGEN</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="project.html">1. Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">2. Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">3. Evaluation and Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">4. Set-up guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">5. List of Implemented Modules (generated)</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5.1. agent module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="brush.html">5.2. brush module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="canvas.html">5.3. canvas module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">5.4. main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">5.5. model module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stroke.html">5.6. stroke module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">5. src</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">5. src</a></li>
+      <li>Next: <a href="brush.html" title="next chapter">5.2. brush module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, ccmas-imgen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="_sources/agent.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

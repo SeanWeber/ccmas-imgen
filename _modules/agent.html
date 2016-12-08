@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>agent &#8212; CCMAS-IMGEN 1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for agent</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. py:module:: mas_memory</span>
+<span class="sd">    :platform: Unix</span>
+<span class="sd">An example of an agent&#39;s memory model and how an agent can learn (learn here is</span>
+<span class="sd">used in a very weak sense) new artifacts to it from domain.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">creamas.core</span> <span class="k">import</span> <span class="n">CreativeAgent</span><span class="p">,</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">Simulation</span><span class="p">,</span> <span class="n">Artifact</span>
+
+<span class="kn">from</span> <span class="nn">model</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">brush</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">stroke</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">im</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="c1"># Logging setup. This is simplified setup as all agents use the same logger.</span>
+<span class="c1"># It _will_ cause some problems in asynchronous settings, especially if you</span>
+<span class="c1"># are logging to a file.</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ListMemory"><a class="viewcode-back" href="../agent.html#agent.ListMemory">[docs]</a><span class="k">class</span> <span class="nc">ListMemory</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Simple list memory which stores all seen artifacts as is into a list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param int capacity: The maximum number of artifacts in the memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span> <span class="o">=</span> <span class="n">capacity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The maximum number of artifacts in the memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The artifacts currently in the memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span>
+
+<div class="viewcode-block" id="ListMemory.memorize"><a class="viewcode-back" href="../agent.html#agent.ListMemory.memorize">[docs]</a>    <span class="k">def</span> <span class="nf">memorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Memorize an artifact into the memory.</span>
+<span class="sd">        If the artifact is already in the memory, does nothing. If memory</span>
+<span class="sd">        is full and a new artifact is memorized, forgets the oldest artifact.</span>
+<span class="sd">        :param artifact: Artifact to be learned.</span>
+<span class="sd">        :type artifact: :class:`~creamas.core.artifact.Artifact`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">artifact</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">artifact</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artifacts</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">capacity</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="FoolPainterAgent"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent">[docs]</a><span class="k">class</span> <span class="nc">FoolPainterAgent</span><span class="p">(</span><span class="n">CreativeAgent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A sample agent implementation.</span>
+<span class="sd">    Agent invents new strokes by combination of brushes patterns and palette of colours that it has learned</span>
+<span class="sd">    from a given artwork or randomly otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param env:</span>
+<span class="sd">            subclass of :py:class:`~creamas.core.environment.Environment`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">ListMemory</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_reference</span>     <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_palette_size</span>  <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_palette</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pick_colors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_palette_size</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span>          <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># Grid of NxN ; N = random value from 3 to 5.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brush</span>               <span class="o">=</span> <span class="n">Brush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+        <span class="c1"># plt.imshow(self.color_palette, interpolation=&#39;None&#39;)</span>
+        <span class="c1"># plt.imshow(self.brush.pattern, interpolation=&#39;None&#39;, cmap=&#39;gray&#39;)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Agent started: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reference</span><span class="p">))</span>
+
+<div class="viewcode-block" id="FoolPainterAgent.pick_colors"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.pick_colors">[docs]</a>    <span class="k">def</span> <span class="nf">pick_colors</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Return n most frequent colors from the color_palette.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_reference</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_reference</span><span class="o">.</span><span class="n">get</span><span class="p">)[:</span><span class="n">n</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.evaluate"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate given artifact with respect to the agent&#39;s  memory</span>
+<span class="sd">        and how useful it if for the assigned job.</span>
+<span class="sd">        :param artifact: :class:`~creamas.core.Artifact` to be evaluated</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            (evaluation, framing)-tuple, the framing is the combined framing of</span>
+<span class="sd">            both the value and novelty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">value</span><span class="p">,</span> <span class="n">value_framing</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+        <span class="n">novelty</span><span class="p">,</span> <span class="n">novelty_framing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">novelty</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+        <span class="n">surpris</span><span class="p">,</span> <span class="n">surpris_framing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surprisingness</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+
+        <span class="n">framing</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value_framing</span><span class="p">,</span> <span class="s1">&#39;novelty&#39;</span><span class="p">:</span><span class="n">novelty_framing</span><span class="p">,</span> <span class="s1">&#39;suprisingness&#39;</span> <span class="p">:</span> <span class="n">surpris_framing</span><span class="p">}</span>
+        <span class="n">evaluation</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="n">novelty</span> <span class="o">+</span> <span class="n">surpris</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+        <span class="k">return</span> <span class="n">evaluation</span><span class="p">,</span> <span class="n">framing</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.value"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.value">[docs]</a>    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the value of a given artifact with respect to the stroke the</span>
+<span class="sd">        agent has in its vocabulary.</span>
+
+<span class="sd">        :param artifact: :class:`~creamas.core.Artifact` to be evaluated</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            (evaluation, stroke)-tuple, containing both the evaluation and the</span>
+<span class="sd">            stroke giving the maximum evaluation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">value</span><span class="p">,</span> <span class="n">matching_stroke</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">matching_stroke</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.novelty"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.novelty">[docs]</a>    <span class="k">def</span> <span class="nf">novelty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the novelty of a given artifact with respect to the artifacts</span>
+<span class="sd">        in the agent&#39;s memory.</span>
+<span class="sd">        :param artifact: :class:`~creamas.core.Artifact` to be evaluated</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            (novelty, word)-tuple, containing both the novelty value and the</span>
+<span class="sd">            word giving the minimum novelty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">novelty</span><span class="p">,</span> <span class="n">matching_stroke</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">novelty</span><span class="p">,</span> <span class="n">matching_stroke</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.surprisingness"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.surprisingness">[docs]</a>    <span class="k">def</span> <span class="nf">surprisingness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the surprisingness of a given artifact with respect to the artifacts</span>
+<span class="sd">        in the agent&#39;s memory.</span>
+<span class="sd">        :param artifact: :class:`~creamas.core.Artifact` to be evaluated</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            (novelty, word)-tuple, containing both the surprisingness value and the</span>
+<span class="sd">            stroke giving the minimum surprisingness.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">surpris</span><span class="p">,</span> <span class="n">matching_stroke</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">surpris</span><span class="p">,</span> <span class="n">matching_stroke</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.similarity"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.similarity">[docs]</a>    <span class="k">def</span> <span class="nf">similarity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imgA</span><span class="p">,</span> <span class="n">imgB</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Given two images of the same size, this function compute the similarity of the pixel</span>
+<span class="sd">        values. The function compute the differences of RGB values of a pixel and weight it with</span>
+<span class="sd">        the alpha value.</span>
+
+<span class="sd">        :param imgA:</span>
+<span class="sd">        :param imgB:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">delta_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">delta_G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">delta_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_R</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_G</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_B</span><span class="p">))</span> <span class="o">/</span> <span class="mi">3</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">delta</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.generate"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a new stroke.</span>
+<span class="sd">        Stroke are generated mixing data memorized of patterns and colors.</span>
+<span class="sd">        :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">random_color</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_palette</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">stroke</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">pattern</span><span class="p">)):</span>
+            <span class="n">stroke_line</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">col_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="n">row_idx</span><span class="p">])):</span>
+                <span class="n">stroke_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">random_color</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="n">row_idx</span><span class="p">][</span><span class="n">col_idx</span><span class="p">]))</span>
+            <span class="n">stroke</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stroke_line</span><span class="p">)</span>
+
+        <span class="n">stroke</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+        <span class="n">strokeArt</span> <span class="o">=</span> <span class="n">StrokeArtifact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stroke</span><span class="p">)</span>
+        <span class="n">strokeArt</span><span class="o">.</span><span class="n">add_position</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># # Dbg</span>
+        <span class="c1"># plt.imshow(stroke, interpolation=&#39;None&#39;)</span>
+        <span class="c1"># plt.show()</span>
+
+        <span class="k">return</span> <span class="n">strokeArt</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.invent"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.invent">[docs]</a>    <span class="k">def</span> <span class="nf">invent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Invent a new stroke.</span>
+<span class="sd">        Generates multiple (n) strokes and selects the one with the highest</span>
+<span class="sd">        evaluation.</span>
+<span class="sd">        :param int n: Number of strokes to consider</span>
+<span class="sd">        :returns:</span>
+<span class="sd">            a stroke wrapped as :class:`~creamas.core.artifact.Artifact` and its</span>
+<span class="sd">            evaluation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">best_artifact</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+        <span class="n">max_evaluation</span><span class="p">,</span> <span class="n">framing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">best_artifact</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">artifact</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+            <span class="n">evaluation</span><span class="p">,</span> <span class="n">fr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">evaluation</span> <span class="o">&gt;</span> <span class="n">max_evaluation</span><span class="p">:</span>
+                <span class="n">best_artifact</span> <span class="o">=</span> <span class="n">artifact</span>
+                <span class="n">max_evaluation</span> <span class="o">=</span> <span class="n">evaluation</span>
+                <span class="n">framing</span> <span class="o">=</span> <span class="n">fr</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> invented word: </span><span class="si">{}</span><span class="s2"> (eval=</span><span class="si">{}</span><span class="s2">, framing=</span><span class="si">{}</span><span class="s2">)&quot;</span>
+                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">best_artifact</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_evaluation</span><span class="p">,</span>
+                             <span class="n">framing</span><span class="p">))</span>
+        <span class="c1"># Add evaluation and framing to the artifact</span>
+        <span class="n">best_artifact</span><span class="o">.</span><span class="n">add_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_evaluation</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="n">framing</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">best_artifact</span></div>
+
+<div class="viewcode-block" id="FoolPainterAgent.act"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.act">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Agent acts by inventing new strokes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">artifact</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">memorize</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">obj</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">artifacts</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">add_candidate</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span></div></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="o">.</span><span class="n">create</span><span class="p">((</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="mi">5555</span><span class="p">))</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">FoolPainterAgent</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;../media/starring-night.jpg&quot;</span><span class="p">)</span>
+    <span class="n">agent</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">CCMAS-IMGEN</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../project.html">1. Project Goals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../implementation.html">2. Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluation.html">3. Evaluation and Results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../setup.html">4. Set-up guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">5. List of Implemented Modules (generated)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, ccmas-imgen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
