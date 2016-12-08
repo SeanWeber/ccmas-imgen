@@ -1,4 +1,5 @@
 from creamas.core import Environment
+from PIL import Image
 import numpy as np
 import matplotlib.pyplot as pl
 
@@ -30,6 +31,12 @@ class CanvasEnvironment(Environment):
     def view_canvas(self):
         pl.imshow(self._canvas)
         pl.show()
+
+        integer_canvas = np.uint8(self._canvas*255)
+
+        img = Image.fromarray(integer_canvas, 'RGBA')
+        img.save('../output/result.png')
+
         return
 
     def add_stroke(self, stroke, position):
