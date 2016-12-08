@@ -44,7 +44,21 @@ class CanvasEnvironment(Environment):
         y_offset = position[1]
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
-                self._canvas[x + x_offset][y + y_offset] = stroke[x][y]
+                self.paint_over(x + x_offset, y + y_offset, stroke[x][y])
+
+    def paint_over(self, x, y, stroke):
+        RED = 0
+        GREEN = 1
+        BLUE = 2
+        ALPHA = 3
+
+        self._canvas[x][y][RED]   += stroke[RED] * stroke[ALPHA]
+        self._canvas[x][y][GREEN] += stroke[GREEN] * stroke[ALPHA]
+        self._canvas[x][y][BLUE]  += stroke[BLUE] * stroke[ALPHA]
+
+        self._canvas[x][y][RED]   = max(self._canvas[x][y][RED], 1.0)
+        self._canvas[x][y][GREEN] = max(self._canvas[x][y][GREEN], 1.0)
+        self._canvas[x][y][BLUE]  = max(self._canvas[x][y][BLUE], 1.0)
 
     def vote(self, age):
         artifacts = self.perform_voting(method='mean')
