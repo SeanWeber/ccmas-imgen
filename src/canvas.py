@@ -45,25 +45,45 @@ class CanvasEnvironment(Environment):
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
                 self.paint_over(x + x_offset, y + y_offset, stroke[x][y])
+                
+    def prev_stroke(self, stroke, position):
+        x_off = position[0]
+        y_off = position[1]
 
-    def paint_over(self, x, y, stroke):
-        RED = 0
-        GRN = 1
-        BLU = 2
+        tmp_canvas = np.copy(self._canvas)
+
+        for x in range(len(stroke)):
+            for y in range(len(stroke[x])):
+                tmp_canvas[x + x_off][y + y_off] = self.paint_over(x + x_off, y + y_off, stroke[x][y], tmp_canvas)
+
+        pl.imshow(tmp_canvas, interpolation='None')
+        pl.show()
+
+        return tmp_canvas[x_off:(x_off + len(stroke)), y_off:(y_off + len(stroke[0]))]
+
+    def paint_over(self, x, y, stroke, canvas=None):
+        RED   = 0
+        GRN   = 1
+        BLU   = 2
         ALPHA = 3
 
-        self._canvas[x][y][RED] = stroke[RED] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][RED]
-        self._canvas[x][y][GRN] = stroke[GRN] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][GRN]
-        self._canvas[x][y][BLU] = stroke[BLU] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][BLU]
+        if canvas == None:
+            canvas = self._canvas
+
+        canvas[x][y][RED] = stroke[RED] * stroke[ALPHA] + (1 - stroke[ALPHA]) * canvas[x][y][RED]
+        canvas[x][y][GRN] = stroke[GRN] * stroke[ALPHA] + (1 - stroke[ALPHA]) * canvas[x][y][GRN]
+        canvas[x][y][BLU] = stroke[BLU] * stroke[ALPHA] + (1 - stroke[ALPHA]) * canvas[x][y][BLU]
 
         # Sanity check
-        self._canvas[x][y][RED] = min(self._canvas[x][y][RED], 1.0)
-        self._canvas[x][y][GRN] = min(self._canvas[x][y][GRN], 1.0)
-        self._canvas[x][y][BLU] = min(self._canvas[x][y][BLU], 1.0)
+        canvas[x][y][RED] = min(canvas[x][y][RED], 1.0)
+        canvas[x][y][GRN] = min(canvas[x][y][GRN], 1.0)
+        canvas[x][y][BLU] = min(canvas[x][y][BLU], 1.0)
 
-        self._canvas[x][y][RED] = max(self._canvas[x][y][RED], 0.0)
-        self._canvas[x][y][GRN] = max(self._canvas[x][y][GRN], 0.0)
-        self._canvas[x][y][BLU] = max(self._canvas[x][y][BLU], 0.0)
+        canvas[x][y][RED] = max(canvas[x][y][RED], 0.0)
+        canvas[x][y][GRN] = max(canvas[x][y][GRN], 0.0)
+        canvas[x][y][BLU] = max(canvas[x][y][BLU], 0.0)
+
+        return canvas[x][y]
 
     def vote(self, age):
         artifacts = self.perform_voting(method='mean')
