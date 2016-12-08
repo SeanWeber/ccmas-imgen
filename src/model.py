@@ -2,17 +2,18 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
 
+
 def create_model(file_name):
-    '''
+    """
     :param str file_name: Name of the image file
     :returns:
      Dictionary, where keys are RGB-values and items their probabilities
-    '''
+    """
 
     img = mpimg.imread(file_name)
 
     # Normalization of data to decimal (0.0 - 1.0) representation
-    img=img.astype('float16')
+    img = img.astype('float16')
     if img.max() > 1.0:
         img /= 255.0
 
