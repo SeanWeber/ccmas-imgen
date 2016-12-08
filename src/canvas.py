@@ -1,7 +1,10 @@
 from creamas.core import Environment
 from PIL import Image
 import numpy as np
+
+import matplotlib.image as mpimg
 import matplotlib.pyplot as pl
+
 import random
 import logging
 
@@ -14,18 +17,32 @@ class CanvasEnvironment(Environment):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._canvas = []
+        self._target_img = None
 
     @property
     def canvas(self):
         return self._canvas
 
-    def init_canvas(self, shape):
+    def init_canvas(self, target=None, shape=None):
         """
         :param tuple shape: Same shape as the target (height, width,
         :RGB/RGBA) returs: A white canvas
         """
-        self._canvas = np.empty(shape)
-        self._canvas.fill(1.0)
+        if target:
+            img = mpimg.imread(target)
+
+            # Normalization of data to decimal (0.0 - 1.0) representation
+            img = img.astype('float16')
+            if img.max() > 1.0:
+                img /= 255.0
+
+            self._target_img = img
+            self._canvas = np.empty(img.shape)
+
+        else:
+            self._canvas = np.empty(shape)
+            self._canvas.fill(1.0)
+
         return self._canvas
 
     def view_canvas(self):
@@ -42,6 +59,7 @@ class CanvasEnvironment(Environment):
     def add_stroke(self, stroke, position):
         x_offset = position[0]
         y_offset = position[1]
+
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
                 self.paint_over(x + x_offset, y + y_offset, stroke[x][y])
@@ -55,9 +73,6 @@ class CanvasEnvironment(Environment):
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
                 tmp_canvas[x + x_off][y + y_off] = self.paint_over(x + x_off, y + y_off, stroke[x][y], tmp_canvas)
-
-        pl.imshow(tmp_canvas, interpolation='None')
-        pl.show()
 
         return tmp_canvas[x_off:(x_off + len(stroke)), y_off:(y_off + len(stroke[0]))]
 
@@ -94,9 +109,15 @@ class CanvasEnvironment(Environment):
 
             # TODO random point of canvas, change this once stroke has knowledge of position
             max_brush_size = 5
-            canvas_max = self._canvas.shape[0] - max_brush_size
-            random_position = [random.randint(0, canvas_max), random.randint(0, canvas_max)]
+
+            canvas_max_x = self._canvas.shape[0] - max_brush_size
+            canvas_max_y = self._canvas.shape[1] - max_brush_size
+
+            random_position = [random.randint(0, canvas_max_x), random.randint(0, canvas_max_y)]
             self.add_stroke(stroke=accepted.obj, position=random_position)
+
+            pl.imshow(self._canvas, interpolation='None')
+            pl.show()
 
             logger.info("Vote winner by {}: {} (val={})"
                         .format(accepted.creator, accepted.obj, value))
