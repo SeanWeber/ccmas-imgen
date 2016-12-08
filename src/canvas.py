@@ -29,9 +29,6 @@ class CanvasEnvironment(Environment):
         return self._canvas
 
     def view_canvas(self):
-        pl.imshow(self._canvas)
-        pl.show()
-
         integer_canvas = np.uint8(self._canvas*255)
 
         img = Image.fromarray(integer_canvas, 'RGBA')
