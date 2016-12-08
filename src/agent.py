@@ -9,9 +9,11 @@ from creamas.core import CreativeAgent, Environment, Simulation, Artifact
 
 from model import *
 from brush import *
+from stroke import *
 
 import logging
 import random
+
 
 import matplotlib.image as im
 import matplotlib.pyplot as pl
@@ -85,9 +87,8 @@ class FoolPainterAgent(CreativeAgent):
         self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
         self.brush               = Brush(self.brush_size, reference)
 
-        plt.imshow(self.color_palette, interpolation='None')
-
-        plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
+        # plt.imshow(self.color_palette, interpolation='None')
+        # plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
 
         logger.debug("Agent started: {}".format(reference))
 
@@ -173,21 +174,21 @@ class FoolPainterAgent(CreativeAgent):
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         """
         random_color = random.choice(self.color_palette[0])
-        stroke = []
+        stroke = StrokeArtifact(self, [])
 
         for row_idx in range(len(self.brush.pattern)):
             stroke_line = []
             for col_idx in range(len(self.brush.pattern[row_idx])):
                 stroke_line.append(np.insert(random_color, 3, self.brush.pattern[row_idx][col_idx]))
-            stroke.append(stroke_line)
+            stroke.obj.append(stroke_line)
 
-        stroke = np.array(stroke)
+        stroke.add_position([0,0])
 
         # # Dbg
-        plt.imshow(stroke, interpolation='None')
-        plt.show()
+        # plt.imshow(stroke, interpolation='None')
+        # plt.show()
 
-        return Artifact(self, stroke, domain=str)
+        return stroke
 
     def invent(self, n=20):
         """Invent a new stroke.
@@ -226,6 +227,4 @@ class FoolPainterAgent(CreativeAgent):
 if __name__ == "__main__":
     env = Environment.create(('localhost', 5555))
     agent = FoolPainterAgent(env, reference="../media/starring-night.jpg")
-    agent.generate()
-
 
