@@ -2,7 +2,7 @@ from creamas.core import Environment
 from PIL import Image
 import numpy as np
 import matplotlib.pyplot as pl
-
+import random
 import logging
 
 logger = logging.getLogger(__name__)
@@ -67,9 +67,11 @@ class CanvasEnvironment(Environment):
             value = artifacts[0][1]
             self.add_artifact(accepted)
 
-            # center point of canvas, change this once stroke has knowledge of position
-            i = round(self._canvas.shape[0]/2)
-            self.add_stroke(stroke=accepted.obj, position=(i, i))
+            # TODO random point of canvas, change this once stroke has knowledge of position
+            max_brush_size = 5
+            canvas_max = self._canvas.shape[0] - max_brush_size
+            random_position = [random.randint(0, canvas_max), random.randint(0, canvas_max)]
+            self.add_stroke(stroke=accepted.obj, position=random_position)
 
             logger.info("Vote winner by {}: {} (val={})"
                         .format(accepted.creator, accepted.obj, value))
