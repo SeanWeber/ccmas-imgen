@@ -45,17 +45,19 @@ class CanvasEnvironment(Environment):
 
     def paint_over(self, x, y, stroke):
         RED = 0
-        GREEN = 1
-        BLUE = 2
+        GRN = 1
+        BLU = 2
         ALPHA = 3
 
-        self._canvas[x][y][RED]   += stroke[RED] * stroke[ALPHA]
-        self._canvas[x][y][GREEN] += stroke[GREEN] * stroke[ALPHA]
-        self._canvas[x][y][BLUE]  += stroke[BLUE] * stroke[ALPHA]
+        transparency = stroke[ALPHA]
 
-        self._canvas[x][y][RED]   = max(self._canvas[x][y][RED], 1.0)
-        self._canvas[x][y][GREEN] = max(self._canvas[x][y][GREEN], 1.0)
-        self._canvas[x][y][BLUE]  = max(self._canvas[x][y][BLUE], 1.0)
+        self._canvas[x][y][RED] = stroke[RED] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][RED]
+        self._canvas[x][y][GRN] = stroke[GRN] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][GRN]
+        self._canvas[x][y][BLU] = stroke[BLU] * stroke[ALPHA] + (1 - stroke[ALPHA]) * self._canvas[x][y][BLU]
+
+        self._canvas[x][y][RED] = min(self._canvas[x][y][RED], 1.0)
+        self._canvas[x][y][GRN] = min(self._canvas[x][y][GRN], 1.0)
+        self._canvas[x][y][BLU] = min(self._canvas[x][y][BLU], 1.0)
 
     def vote(self, age):
         artifacts = self.perform_voting(method='mean')
