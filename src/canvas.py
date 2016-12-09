@@ -76,7 +76,19 @@ class CanvasEnvironment(Environment):
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
                 self.paint_over(x + x_offset, y + y_offset, stroke[x][y])
-                
+        # radius should be equal to brush.size
+        self.update_layers(radius=np.floor(stroke.shape[0]/2), position=position)
+
+    def update_layers(self, radius, position):
+        '''When a stroke is applied on the canvas, this function updates layers.
+
+        :param int radius: Radius of the stroke
+        :param tuple position: Position of the stroke
+        '''
+        if (position[0] - radius >= 0) && (position[1] - radius >= 0)  &&
+           (position[0] + radius <= self._canvas.shape[0]) && (position[1] + radius <= self._canvas.shape[1]):
+        self._layers[position[0] - radius: position[0] + radius, position[1] - radius: position[1] + radius] += 1
+
     def prev_stroke(self, stroke, position):
         x_off = position[0]
         y_off = position[1]
