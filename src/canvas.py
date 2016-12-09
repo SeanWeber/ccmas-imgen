@@ -14,17 +14,29 @@ logger.setLevel(logging.DEBUG)
 
 
 class CanvasEnvironment(Environment):
+    '''Extended version of the `~creamas.core.environment.Environment`'''
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._canvas = []
+        self._layers = []
         self._target_img = None
 
     @property
     def canvas(self):
+        '''Array representation of the image that will be created by agents.'''
         return self._canvas
 
+    @property
+    def layers(self):
+        '''Array containing knowledge of layers over each pixel in canvas.'''
+        return self._layers
+
     def init_canvas(self, target=None, shape=None):
-        """
+        """Funtion that initializes `~src.canvas.CanvasEnvironment`
+        with approriate attribute values. This function should be run
+        after create().
+
         :param tuple shape: Same shape as the target (height, width,
         :RGB/RGBA) returs: A white canvas
         """
@@ -43,6 +55,8 @@ class CanvasEnvironment(Environment):
             self._canvas = np.empty(shape)
             self._canvas.fill(1.0)
 
+        # Counts each time each pixel in the canvas has been drawn over
+        self._layers = np.zeros(shape[:2])
         return self._canvas
 
     def view_canvas(self):
