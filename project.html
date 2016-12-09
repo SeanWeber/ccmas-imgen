@@ -51,12 +51,12 @@
 <p>Agents share a common canvas. In every iteration, each agent draws a stroke in the canvas using one of its brushes and a color from its palette. Every agent&#8217;s goal is to propagate the style of &#8216;his&#8217; image into the final painting.</p>
 <p>The system uses two-level evaluation. Firstly, each agent is able to evaluate value, novelty and surprisingness of a stroke. Secondly, the environment is able to estimate the quality of the agents&#8217; painting. This allows us to compare results from different sets of agents (and different runs).</p>
 <p>This process is visualised in the diagram.</p>
-<p>TBA: how does an agent choose a position of its stroke in the canvas?
-TBA: describe the evaluation process in detail</p>
 <img alt="_images/diagram.png" src="_images/diagram.png" />
 <div class="section" id="why-is-the-system-creative">
 <h2>1.1. Why is the system creative?<a class="headerlink" href="#why-is-the-system-creative" title="Permalink to this headline">¶</a></h2>
-<p>TBA</p>
+<p>Even though each agent tries to recreate its image which could be considered as a mere generation, we can say that the system as a whole is creative.</p>
+<p>Firstly, each agent tries to generalise the information that is contained in its image data. Agent extracts the most frequent colours in the image. Also, new strokes aren&#8217;t just parts of the original image but instead they are expressed as brushes of various shapes.</p>
+<p>Secondly, the target image is painted by a set of agents. These agents have different opinions on how the image should look like, but at the same time, they share a common evaluation function. This function ensures that the new image is valuable. Also as there are multiple agents in the system, a newly produced image should show novelty.</p>
 </div>
 <div class="section" id="elements-of-the-system">
 <h2>1.2. Elements of the system<a class="headerlink" href="#elements-of-the-system" title="Permalink to this headline">¶</a></h2>
@@ -68,31 +68,34 @@ TBA: describe the evaluation process in detail</p>
 </ul>
 <img alt="_images/agent.png" src="_images/agent.png" />
 </div>
-<div class="section" id="artifact-stroke">
-<h3>1.2.2. Artifact (= Stroke)<a class="headerlink" href="#artifact-stroke" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="artefact-stroke">
+<h3>1.2.2. Artefact (= Stroke)<a class="headerlink" href="#artefact-stroke" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>Modification of the shared canvas.</li>
-<li>A stroke is created by combining a brush with a color from agent&#8217;s palette.</li>
+<li>A stroke is created by combining a brush with a colour from agent&#8217;s palette.</li>
 </ul>
 <img alt="_images/stroke.png" src="_images/stroke.png" />
 </div>
 <div class="section" id="environment-canvas">
 <h3>1.2.3. Environment (= Canvas)<a class="headerlink" href="#environment-canvas" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>A shared canvas. Agents paint their strokes in the canvas.</li>
+<li>A shared canvas. Agents paint their strokes on the canvas.</li>
+<li>An agent tries to modify the canvas in a valuable and novel way. That means it tries to choose a spot on canvas that hasn&#8217;t been used many times before.</li>
 </ul>
 </div>
 <div class="section" id="memory-model">
 <h3>1.2.4. Memory model<a class="headerlink" href="#memory-model" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>The system uses a simple ListMemory model.</li>
-<li>TBA</li>
+<li>An agent remembers last n strokes and try to avoid repetition of the same strokes.</li>
+<li>This is another source of novelty in the system.</li>
 </ul>
 </div>
 <div class="section" id="interactions">
 <h3>1.2.5. Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>TBA</li>
+<li>The system contains a communication schema that allows agents to communicate with each other.</li>
+<li>An agent can request other agent&#8217;s opinion about its stroke.</li>
 </ul>
 </div>
 <div class="section" id="inspiring-set">

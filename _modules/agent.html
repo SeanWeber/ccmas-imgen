@@ -126,11 +126,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">color_reference</span>     <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">color_palette_size</span>  <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_palette_size</span>  <span class="o">=</span> <span class="mi">50</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color_palette</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pick_colors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_palette_size</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span>          <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># Grid of NxN ; N = random value from 3 to 5.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span>          <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Grid of NxN ; N = random value from 3 to 5.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">brush</span>               <span class="o">=</span> <span class="n">Brush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+
 
         <span class="c1"># plt.imshow(self.color_palette, interpolation=&#39;None&#39;)</span>
         <span class="c1"># plt.imshow(self.brush.pattern, interpolation=&#39;None&#39;, cmap=&#39;gray&#39;)</span>
@@ -168,7 +171,18 @@
 <span class="sd">            stroke giving the maximum evaluation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">value</span><span class="p">,</span> <span class="n">matching_stroke</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">;</span>
+        <span class="n">stroke</span> <span class="o">=</span> <span class="n">artifact</span><span class="o">.</span><span class="n">obj</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">artifact</span><span class="o">.</span><span class="n">position</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">prev_stroke</span><span class="p">(</span><span class="n">artifact</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_target_img</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]:(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke</span><span class="p">)),</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]:(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke</span><span class="p">))]</span>
+
+        <span class="c1"># plt.imshow(result, interpolation=&#39;None&#39;)</span>
+        <span class="c1"># plt.show()</span>
+        <span class="c1"># plt.imshow(target, interpolation=&#39;None&#39;)</span>
+        <span class="c1"># plt.show()</span>
+
+        <span class="n">value</span><span class="p">,</span> <span class="n">matching_stroke</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">target</span><span class="p">),</span> <span class="kc">None</span><span class="p">;</span>
         <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">matching_stroke</span></div>
 
 <div class="viewcode-block" id="FoolPainterAgent.novelty"><a class="viewcode-back" href="../agent.html#agent.FoolPainterAgent.novelty">[docs]</a>    <span class="k">def</span> <span class="nf">novelty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">):</span>
@@ -205,9 +219,9 @@
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">delta_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">delta_G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">delta_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">3</span><span class="p">],</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">delta_R</span> <span class="o">=</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">delta_G</span> <span class="o">=</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">delta_B</span> <span class="o">=</span> <span class="n">imgA</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">imgB</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_R</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_G</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">delta_B</span><span class="p">))</span> <span class="o">/</span> <span class="mi">3</span>
 
@@ -221,6 +235,8 @@
         <span class="n">random_color</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_palette</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">stroke</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">brush</span> <span class="o">=</span> <span class="n">Brush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+
         <span class="k">for</span> <span class="n">row_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">pattern</span><span class="p">)):</span>
             <span class="n">stroke_line</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">col_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">brush</span><span class="o">.</span><span class="n">pattern</span><span class="p">[</span><span class="n">row_idx</span><span class="p">])):</span>
@@ -229,7 +245,13 @@
 
         <span class="n">stroke</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
         <span class="n">strokeArt</span> <span class="o">=</span> <span class="n">StrokeArtifact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stroke</span><span class="p">)</span>
-        <span class="n">strokeArt</span><span class="o">.</span><span class="n">add_position</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">canvas_max_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+        <span class="n">canvas_max_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_canvas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">stroke</span><span class="p">)</span>
+
+        <span class="n">random_position</span> <span class="o">=</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">canvas_max_x</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">canvas_max_y</span><span class="p">)]</span>
+
+        <span class="n">strokeArt</span><span class="o">.</span><span class="n">add_position</span><span class="p">(</span><span class="n">random_position</span><span class="p">)</span>
 
         <span class="c1"># # Dbg</span>
         <span class="c1"># plt.imshow(stroke, interpolation=&#39;None&#39;)</span>
@@ -255,8 +277,8 @@
                 <span class="n">best_artifact</span> <span class="o">=</span> <span class="n">artifact</span>
                 <span class="n">max_evaluation</span> <span class="o">=</span> <span class="n">evaluation</span>
                 <span class="n">framing</span> <span class="o">=</span> <span class="n">fr</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> invented word: </span><span class="si">{}</span><span class="s2"> (eval=</span><span class="si">{}</span><span class="s2">, framing=</span><span class="si">{}</span><span class="s2">)&quot;</span>
-                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">best_artifact</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">max_evaluation</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> invented stroke: </span><span class="si">{}</span><span class="s2"> (eval=</span><span class="si">{}</span><span class="s2">, framing=</span><span class="si">{}</span><span class="s2">)&quot;</span>
+                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">max_evaluation</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span>
                              <span class="n">framing</span><span class="p">))</span>
         <span class="c1"># Add evaluation and framing to the artifact</span>
         <span class="n">best_artifact</span><span class="o">.</span><span class="n">add_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_evaluation</span><span class="p">,</span> <span class="n">fr</span><span class="o">=</span><span class="n">framing</span><span class="p">)</span>
@@ -267,7 +289,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">artifact</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">memorize</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">obj</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">artifacts</span><span class="p">])</span>
+        <span class="c1"># logger.debug([a.obj for a in self.mem.artifacts])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">add_candidate</span><span class="p">(</span><span class="n">artifact</span><span class="p">)</span></div></div>
 
 

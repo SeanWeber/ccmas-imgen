@@ -50,6 +50,7 @@
 <dt id="canvas.CanvasEnvironment">
 <em class="property">class </em><code class="descclassname">canvas.</code><code class="descname">CanvasEnvironment</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">creamas.core.environment.Environment</span></code></p>
+<p>Extended version of the <cite>~creamas.core.environment.Environment</cite></p>
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.add_stroke">
 <code class="descname">add_stroke</code><span class="sig-paren">(</span><em>stroke</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.add_stroke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.add_stroke" title="Permalink to this definition">¶</a></dt>
@@ -58,12 +59,16 @@
 <dl class="attribute">
 <dt id="canvas.CanvasEnvironment.canvas">
 <code class="descname">canvas</code><a class="headerlink" href="#canvas.CanvasEnvironment.canvas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Array representation of the image that will be created by agents.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.init_canvas">
-<code class="descname">init_canvas</code><span class="sig-paren">(</span><em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.init_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.init_canvas" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descname">init_canvas</code><span class="sig-paren">(</span><em>target=None</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.init_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.init_canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funtion that initializes <cite>~src.canvas.CanvasEnvironment</cite>
+with approriate attribute values. This function should be run
+after create().</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -76,9 +81,20 @@
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="canvas.CanvasEnvironment.layers">
+<code class="descname">layers</code><a class="headerlink" href="#canvas.CanvasEnvironment.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing knowledge of layers over each pixel in canvas.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.paint_over">
-<code class="descname">paint_over</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>stroke</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.paint_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.paint_over" title="Permalink to this definition">¶</a></dt>
+<code class="descname">paint_over</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>stroke</em>, <em>canvas=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.paint_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.paint_over" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="canvas.CanvasEnvironment.prev_stroke">
+<code class="descname">prev_stroke</code><span class="sig-paren">(</span><em>stroke</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.prev_stroke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.prev_stroke" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">

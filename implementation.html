@@ -46,11 +46,22 @@
             
   <div class="section" id="implementation">
 <h1>2. Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h1>
+<p>This section briefly describes the project from a programmatic point view.</p>
 <div class="section" id="used-libraries">
 <h2>2.1. Used Libraries<a class="headerlink" href="#used-libraries" title="Permalink to this headline">¶</a></h2>
+<p>In order to keep the implementation on a reasonable level of complexity, we have used several libraries. They are listed below.</p>
+<ul class="simple">
+<li><a class="reference external" href="http://assamite.github.io/creamas/">Creamas</a> library defines a multi-agent system model, voting and evaluation scheme and also an interaction model.</li>
+<li><a class="reference external" href="http://www.numpy.org/">NumPy</a> library provides an efficient implementation of various data structures that can be employed in the image processing.</li>
+<li><a class="reference external" href="https://www.scipy.org/">SciPy</a> implements many image processing algorithms.</li>
+<li><a class="reference external" href="http://matplotlib.org/">matplotlib</a> allows our system to display newly created images and thus provide a certain level of interactivity.</li>
+</ul>
 </div>
 <div class="section" id="structure-of-implementation">
 <h2>2.2. Structure of implementation<a class="headerlink" href="#structure-of-implementation" title="Permalink to this headline">¶</a></h2>
+<p>The system is run by the main method in the <a class="reference internal" href="main.html"><span class="doc">main module</span></a>. An instance of <a class="reference internal" href="canvas.html"><span class="doc">canvas module</span></a> is created with a set of agents. The simulation is started then.</p>
+<p>The simulation is run in iterations. In every iteration, each agent proposes a new stroke...</p>
+<p>(this part of the documentation is to be finished as we finalise the evaluation scheme)</p>
 </div>
 </div>
 
