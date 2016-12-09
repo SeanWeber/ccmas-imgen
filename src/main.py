@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     # Run the simulation
     sim = Simulation(env, log_folder='./logs', callback=env.vote)
-    sim.async_steps(100)
+    sim.async_steps(1000)
     sim.end()
 
     # View the canvas
