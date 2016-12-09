@@ -46,12 +46,11 @@ class CanvasEnvironment(Environment):
         return self._canvas
 
     def view_canvas(self):
-        integer_canvas = np.uint8(self._canvas*255)
 
-        img = Image.fromarray(integer_canvas, 'RGBA')
+        img = Image.fromarray(self._canvas, 'RGBA')
         img.save('../output/result.png')
 
-        pl.imshow(img, interpolation='None')
+        pl.imshow(self._canvas, interpolation='None')
         pl.show()
 
         return
@@ -110,17 +109,13 @@ class CanvasEnvironment(Environment):
             # TODO random point of canvas, change this once stroke has knowledge of position
             max_brush_size = 5
 
-            canvas_max_x = self._canvas.shape[0] - max_brush_size
-            canvas_max_y = self._canvas.shape[1] - max_brush_size
+            self.add_stroke(stroke=accepted.obj, position=accepted.position)
 
-            random_position = [random.randint(0, canvas_max_x), random.randint(0, canvas_max_y)]
-            self.add_stroke(stroke=accepted.obj, position=random_position)
-
-            pl.imshow(self._canvas, interpolation='None')
-            pl.show()
+            # pl.imshow(self._canvas, interpolation='None')
+            # pl.show()
 
             logger.info("Vote winner by {}: {} (val={})"
-                        .format(accepted.creator, accepted.obj, value))
+                        .format(accepted.creator, "-", value))
         else:
             logger.info("No vote winner!")
         self.clear_candidates()

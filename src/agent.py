@@ -81,11 +81,14 @@ class FoolPainterAgent(CreativeAgent):
         self.n = 1
 
         self.color_reference     = create_model(reference)
-        self.color_palette_size  = 30
+        self.color_palette_size  = 50
         self.color_palette       = np.array(self.pick_colors(self.color_palette_size))
 
-        self.brush_size          = random.randint(3,5) # Grid of NxN ; N = random value from 3 to 5.
+        self.brush_size          = random.randint(2,10) # Grid of NxN ; N = random value from 3 to 5.
         self.brush               = Brush(self.brush_size, reference)
+
+        self.reference = reference
+
 
         # plt.imshow(self.color_palette, interpolation='None')
         # plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
@@ -123,7 +126,18 @@ class FoolPainterAgent(CreativeAgent):
             stroke giving the maximum evaluation
         """
 
-        value, matching_stroke = 0, None;
+        stroke = artifact.obj
+        pos = artifact.position
+
+        result = self.env.prev_stroke(artifact.obj, pos)
+        target = self.env._target_img[pos[0]:(pos[0] + len(stroke)), pos[1]:(pos[1] + len(stroke))]
+
+        # plt.imshow(result, interpolation='None')
+        # plt.show()
+        # plt.imshow(target, interpolation='None')
+        # plt.show()
+
+        value, matching_stroke = self.similarity(result, target), None;
         return value, matching_stroke
 
     def novelty(self, artifact):
@@ -160,9 +174,9 @@ class FoolPainterAgent(CreativeAgent):
         :return:
         """
 
-        delta_R = np.multiply(imgA[:,:,3], imgA[:,:,0]) - np.multiply(imgB[:,:,3], imgB[:,:,0])
-        delta_G = np.multiply(imgA[:,:,3], imgA[:,:,1]) - np.multiply(imgB[:,:,3], imgB[:,:,1])
-        delta_B = np.multiply(imgA[:,:,3], imgA[:,:,2]) - np.multiply(imgB[:,:,3], imgB[:,:,2])
+        delta_R = imgA[:,:,0] - imgB[:,:,0]
+        delta_G = imgA[:,:,1] - imgB[:,:,1]
+        delta_B = imgA[:,:,2] - imgB[:,:,2]
 
         delta = (np.absolute(delta_R) + np.absolute(delta_G) + np.absolute(delta_B)) / 3
 
@@ -176,6 +190,8 @@ class FoolPainterAgent(CreativeAgent):
         random_color = random.choice(self.color_palette[0])
         stroke = []
 
+        self.brush = Brush(self.brush_size, self.reference)
+
         for row_idx in range(len(self.brush.pattern)):
             stroke_line = []
             for col_idx in range(len(self.brush.pattern[row_idx])):
@@ -184,7 +200,13 @@ class FoolPainterAgent(CreativeAgent):
 
         stroke = np.array(stroke)
         strokeArt = StrokeArtifact(self, stroke)
-        strokeArt.add_position([0,0])
+
+        canvas_max_x = self.env._canvas.shape[0] - len(stroke)
+        canvas_max_y = self.env._canvas.shape[1] - len(stroke)
+
+        random_position = [random.randint(0, canvas_max_x), random.randint(0, canvas_max_y)]
+
+        strokeArt.add_position(random_position)
 
         # # Dbg
         # plt.imshow(stroke, interpolation='None')
@@ -210,8 +232,8 @@ class FoolPainterAgent(CreativeAgent):
                 best_artifact = artifact
                 max_evaluation = evaluation
                 framing = fr
-        logger.debug("{} invented word: {} (eval={}, framing={})"
-                     .format(self.name, best_artifact.obj, max_evaluation,
+        logger.debug("{} invented stroke: {} (eval={}, framing={})"
+                     .format(self.name, max_evaluation, "-",
                              framing))
         # Add evaluation and framing to the artifact
         best_artifact.add_eval(self, max_evaluation, fr=framing)
@@ -222,7 +244,7 @@ class FoolPainterAgent(CreativeAgent):
         """
         artifact = self.invent(self.n)
         self.mem.memorize(artifact)
-        logger.debug([a.obj for a in self.mem.artifacts])
+        # logger.debug([a.obj for a in self.mem.artifacts])
         self.env.add_candidate(artifact)
 
 
