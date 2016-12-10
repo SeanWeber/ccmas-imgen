@@ -80,14 +80,13 @@ class CanvasEnvironment(Environment):
         self.update_layers(radius=np.floor(stroke.shape[0]/2), position=position)
 
     def update_layers(self, radius, position):
-        '''When a stroke is applied on the canvas, this function updates layers.
+        """When a stroke is applied on the canvas, this function updates layers.
 
         :param int radius: Radius of the stroke
         :param tuple position: Position of the stroke
-        '''
-        if (position[0] - radius >= 0) && (position[1] - radius >= 0)  &&
-           (position[0] + radius <= self._canvas.shape[0]) && (position[1] + radius <= self._canvas.shape[1]):
-        self._layers[position[0] - radius: position[0] + radius, position[1] - radius: position[1] + radius] += 1
+        """
+        if (position[0] - radius >= 0) and (position[1] - radius >= 0) and (position[0] + radius <= self._canvas.shape[0]) and (position[1] + radius <= self._canvas.shape[1]):
+            self._layers[position[0] - radius: position[0] + radius, position[1] - radius: position[1] + radius] += 1
 
     def prev_stroke(self, stroke, position):
         x_off = position[0]
