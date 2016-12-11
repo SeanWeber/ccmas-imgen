@@ -46,15 +46,41 @@
             
   <div class="section" id="set-up-guide">
 <h1>4. Set-up guide<a class="headerlink" href="#set-up-guide" title="Permalink to this headline">¶</a></h1>
-<p>TBA</p>
+<p>This section guides throught the process of installing and setting up the project.</p>
 <div class="section" id="requirements">
 <h2>4.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python 3.5.2</li>
+<li>Creamas 0.1.1</li>
+<li>NumPy-mkl 1.12.0b1</li>
+<li>matplotlib 1.5.3</li>
+<li>SciPy 0.18.1</li>
+</ul>
 </div>
 <div class="section" id="installation-guide">
 <h2>4.2. Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h2>
+<p>First clone the project from its GitHub repository.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ git clone https://github.com/ccmas-imgen/ccmas-imgen.git
+</pre></div>
+</div>
+<p>Activate virtual environemnt</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> venv/bin/active
+</pre></div>
+</div>
+<p>Access the project folder and install all the requirements using pip</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venv<span class="o">)</span> ~$ <span class="nb">cd</span> ccmas-imgen
+<span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen$ pip install -r requirements.txt
+</pre></div>
+</div>
 </div>
 <div class="section" id="running-the-application">
 <h2>4.3. Running the Application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h2>
+<p>The application is started by running <cite>main.py</cite> that can be found in the <cite>src</cite> folder. Currently, it does not need any arguments because all the settings are being set in the code.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen$ <span class="nb">cd</span> src
+<span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen/src$ python main.py
+</pre></div>
+</div>
+<p>After executing the code above, the simulation is started. When it is finished, the final generated image is displayed.</p>
 </div>
 </div>
 
