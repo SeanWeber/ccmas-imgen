@@ -18,10 +18,8 @@ class CanvasEnvironment(Environment):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self._canvas = []
         self._layers = []
-
         self._target_img = None
 
     @property
@@ -40,7 +38,7 @@ class CanvasEnvironment(Environment):
         after create().
 
         :param tuple shape: Same shape as the target (height, width,
-        :RGB/RGBA) returs: A white canvas
+        :RGB/RGBA) returns: A white canvas
         """
         if target:
             img = mpimg.imread(target)
@@ -58,7 +56,7 @@ class CanvasEnvironment(Environment):
 
         else:
             self._canvas = np.empty(shape)
-            self._canvas.fill(0.5)
+            self._canvas.fill(1.0)
 
         # Counts each time each pixel in the canvas has been drawn over
         self._layers = np.zeros(shape[:2])
