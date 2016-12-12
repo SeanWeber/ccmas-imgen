@@ -7,11 +7,13 @@ import matplotlib.pyplot as pl
 
 import random
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 class CanvasEnvironment(Environment):
     '''Extended version of the `~creamas.core.environment.Environment`'''
@@ -66,7 +68,7 @@ class CanvasEnvironment(Environment):
         integer_canvas = np.uint8(self._canvas * 255)
 
         img = Image.fromarray(integer_canvas, 'RGB')
-        img.save('../output/result.png')
+        img.save(PROJECT_ROOT + '/output/result.png')
 
         #pl.imshow(self._canvas, interpolation='None')
         #pl.show()
