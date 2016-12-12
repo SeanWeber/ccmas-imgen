@@ -15,8 +15,9 @@ logger.setLevel(logging.DEBUG)
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
+
 class CanvasEnvironment(Environment):
-    '''Extended version of the `~creamas.core.environment.Environment`'''
+    """Extended version of the `~creamas.core.environment.Environment`"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,12 +27,12 @@ class CanvasEnvironment(Environment):
 
     @property
     def canvas(self):
-        '''Array representation of the image that will be created by agents.'''
+        """Array representation of the image that will be created by agents."""
         return self._canvas
 
     @property
     def layers(self):
-        '''Array containing knowledge of layers over each pixel in canvas.'''
+        """Array containing knowledge of layers over each pixel in canvas."""
         return self._layers
 
     def init_canvas(self, target=None, shape=None):
@@ -64,14 +65,11 @@ class CanvasEnvironment(Environment):
         self._layers = np.zeros(shape[:2])
         return self._canvas
 
-    def view_canvas(self, path='/output/result.png'):
+    def view_canvas(self, path=PROJECT_ROOT+'/output/result.png'):
         integer_canvas = np.uint8(self._canvas * 255)
 
         img = Image.fromarray(integer_canvas, 'RGB')
-        img.save(PROJECT_ROOT + path)
-
-        #pl.imshow(self._canvas, interpolation='None')
-        #pl.show()
+        img.save(path)
 
         return
 
@@ -86,11 +84,11 @@ class CanvasEnvironment(Environment):
         self.update_layers(stroke, position)
 
     def update_layers(self, stroke, position):
-        '''When a stroke is applied on the canvas, this function updates layers.
+        """When a stroke is applied on the canvas, this function updates layers.
 
         :param Artifact stroke: Stroke element
         :param tuple position: Position of the stroke
-        '''
+        """
 
         self._layers[position[0]: position[0] + len(stroke), position[1]: position[1] + len(stroke)] += 1
 
@@ -139,8 +137,8 @@ class CanvasEnvironment(Environment):
 
             self.add_stroke(stroke=accepted.obj, position=accepted.position)
 
-            if (self.age % 5 == 0):
-                self.view_canvas('/output/progress/in_process_' + str(self.age) + '.png')
+            if self.age % 5 == 0:
+                self.view_canvas(PROJECT_ROOT + '/output/progress/in_process_' + str(self.age) + '.png')
 
             # pl.imshow(self._canvas, interpolation='None')
             # pl.show()
