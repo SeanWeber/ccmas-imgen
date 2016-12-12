@@ -18,8 +18,10 @@ class CanvasEnvironment(Environment):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self._canvas = []
         self._layers = []
+
         self._target_img = None
 
     @property
@@ -50,10 +52,13 @@ class CanvasEnvironment(Environment):
 
             self._target_img = img
             self._canvas = np.empty(img.shape)
+            self._canvas.fill(0.0)
+
+            shape = img.shape
 
         else:
             self._canvas = np.empty(shape)
-            self._canvas.fill(1.0)
+            self._canvas.fill(0.5)
 
         # Counts each time each pixel in the canvas has been drawn over
         self._layers = np.zeros(shape[:2])
@@ -76,18 +81,17 @@ class CanvasEnvironment(Environment):
         for x in range(len(stroke)):
             for y in range(len(stroke[x])):
                 self.paint_over(x + x_offset, y + y_offset, stroke[x][y])
-        # radius should be equal to brush.size
-        self.update_layers(radius=np.floor(stroke.shape[0]/2), position=position)
 
-    def update_layers(self, radius, position):
+        self.update_layers(stroke, position)
+
+    def update_layers(self, stroke, position):
         '''When a stroke is applied on the canvas, this function updates layers.
 
-        :param int radius: Radius of the stroke
+        :param Artifact stroke: Stroke element
         :param tuple position: Position of the stroke
         '''
-        if (position[0] - radius >= 0) && (position[1] - radius >= 0)  &&
-           (position[0] + radius <= self._canvas.shape[0]) && (position[1] + radius <= self._canvas.shape[1]):
-        self._layers[position[0] - radius: position[0] + radius, position[1] - radius: position[1] + radius] += 1
+
+        self._layers[position[0]: position[0] + len(stroke), position[1]: position[1] + len(stroke)] += 1
 
     def prev_stroke(self, stroke, position):
         x_off = position[0]

@@ -78,13 +78,13 @@ class FoolPainterAgent(CreativeAgent):
         super().__init__(env)
 
         self.mem = ListMemory(20)
-        self.n = 1
+        self.n = 3
 
         self.color_reference     = create_model(reference)
-        self.color_palette_size  = 50
+        self.color_palette_size  = 60
         self.color_palette       = np.array(self.pick_colors(self.color_palette_size))
 
-        self.brush_size          = random.randint(2,10) # Grid of NxN ; N = random value from 3 to 5.
+        self.brush_size          = random.randint(4,50) # Grid of NxN ; N = random value from 3 to 5.
         self.brush               = Brush(self.brush_size, reference)
 
         self.reference = reference
@@ -113,7 +113,7 @@ class FoolPainterAgent(CreativeAgent):
         surpris, surpris_framing = self.surprisingness(artifact)
 
         framing = {'value': value_framing, 'novelty':novelty_framing, 'suprisingness' : surpris_framing}
-        evaluation = (value + novelty + surpris) / 3
+        evaluation = (value + novelty) / 3
         return evaluation, framing
 
     def value(self, artifact):
@@ -126,18 +126,22 @@ class FoolPainterAgent(CreativeAgent):
             stroke giving the maximum evaluation
         """
 
-        stroke = artifact.obj
+        str = artifact.obj
         pos = artifact.position
 
         result = self.env.prev_stroke(artifact.obj, pos)
-        target = self.env._target_img[pos[0]:(pos[0] + len(stroke)), pos[1]:(pos[1] + len(stroke))]
+        target = self.env._target_img[pos[0]:(pos[0] + len(str)), pos[1]:(pos[1] + len(str))]
 
         # plt.imshow(result, interpolation='None')
         # plt.show()
         # plt.imshow(target, interpolation='None')
         # plt.show()
 
-        value, matching_stroke = self.similarity(result, target), None;
+        similarity = self.similarity(result, target)
+
+        value, matching_stroke = similarity, similarity;
+
+        # print(value)
         return value, matching_stroke
 
     def novelty(self, artifact):
@@ -148,8 +152,14 @@ class FoolPainterAgent(CreativeAgent):
             (novelty, word)-tuple, containing both the novelty value and the
             word giving the minimum novelty.
         """
+        
+        str = artifact.obj
+        pos = artifact.position
 
-        novelty, matching_stroke = 0, None;
+        # Computes a value that increases depending on the layer of strokes in that position
+        overpaint = self.env._layers[pos[0]: pos[0] + len(str), pos[1]: pos[1] + len(str)].mean() + 1
+
+        novelty, matching_stroke = 1/overpaint, 1/overpaint;
         return novelty, matching_stroke
 
     def surprisingness(self, artifact):
@@ -173,6 +183,9 @@ class FoolPainterAgent(CreativeAgent):
         :param imgB:
         :return:
         """
+        #
+        # print(imgA)
+        # print(imgB)
 
         delta_R = imgA[:,:,0] - imgB[:,:,0]
         delta_G = imgA[:,:,1] - imgB[:,:,1]
