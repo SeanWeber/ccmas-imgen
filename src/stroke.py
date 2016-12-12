@@ -1,16 +1,31 @@
 from creamas.core import Artifact
+import numpy as np
 
 class StrokeArtifact(Artifact):
     '''Extended version of the `~creamas.core.artifact.Artifact`'''
 
     def __init__(self, *args, **kwargs):
+
         super().__init__(*args, **kwargs)
+
         self._position = []
+        self._color = []
+        self._brush = []
 
     @property
     def position(self):
         '''Position of the `~src.stroke.StrokeArtifact` on the `~src.canvas.CanvasEnvironment`.'''
         return self._position
+
+    @property
+    def color(self):
+        '''Position of the `~src.stroke.StrokeArtifact` on the `~src.canvas.CanvasEnvironment`.'''
+        return self._color
+
+    @property
+    def brush(self):
+        '''Position of the `~src.stroke.StrokeArtifact` on the `~src.canvas.CanvasEnvironment`.'''
+        return self._brush
 
     def add_position(self, position):
         '''Add position information for the `~src.stroke.StrokeArtifact`
@@ -18,4 +33,18 @@ class StrokeArtifact(Artifact):
         :param list position: xy-coordinates of the position.
         '''
         self._position = position
+
+    def add_color(self, color):
+        '''Add color information for the `~src.stroke.StrokeArtifact`
+
+        :param list color: xy-coordinates of the color.
+        '''
+        self._color = color
+
+    def add_brush(self, brush):
+        '''Add brush information for the `~src.stroke.StrokeArtifact`
+
+        :param list brush: xy-coordinates of the brush.
+        '''
+        self._brush = brush
 

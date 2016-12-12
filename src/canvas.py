@@ -64,11 +64,11 @@ class CanvasEnvironment(Environment):
         self._layers = np.zeros(shape[:2])
         return self._canvas
 
-    def view_canvas(self):
+    def view_canvas(self, path='/output/result.png'):
         integer_canvas = np.uint8(self._canvas * 255)
 
         img = Image.fromarray(integer_canvas, 'RGB')
-        img.save(PROJECT_ROOT + '/output/result.png')
+        img.save(PROJECT_ROOT + path)
 
         #pl.imshow(self._canvas, interpolation='None')
         #pl.show()
@@ -137,10 +137,10 @@ class CanvasEnvironment(Environment):
             value = artifacts[0][1]
             self.add_artifact(accepted)
 
-            # TODO random point of canvas, change this once stroke has knowledge of position
-            max_brush_size = 5
-
             self.add_stroke(stroke=accepted.obj, position=accepted.position)
+
+            if (self.age % 5 == 0):
+                self.view_canvas('/output/progress/in_process_' + str(self.age) + '.png')
 
             # pl.imshow(self._canvas, interpolation='None')
             # pl.show()

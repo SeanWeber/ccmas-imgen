@@ -37,5 +37,10 @@ if __name__ == "__main__":
 
     str = fool.generate()
 
-    #pl.imshow(env._layers, interpolation='None')
-    #pl.show()
+    # Final previews
+
+    pl.imshow(env._canvas, interpolation='None')
+    pl.show()
+
+    pl.imshow(env._layers, interpolation='None')
+    pl.show()

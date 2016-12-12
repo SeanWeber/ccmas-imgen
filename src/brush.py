@@ -25,7 +25,11 @@ class Brush:
         self._size 	= size
         self._reference = reference
 
-        self.pattern = self.generate_pattern(self._reference, self._size)
+        self._pattern = self.generate_pattern(self._reference, self._size)
+
+    @property
+    def pattern(self):
+        return self._pattern
 
     def generate_pattern(self, reference, size):
         # Import image from reference and convert it to grayscale.

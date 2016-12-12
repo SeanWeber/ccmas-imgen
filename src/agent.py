@@ -14,7 +14,6 @@ from stroke import *
 import logging
 import random
 
-
 import matplotlib.image as im
 import matplotlib.pyplot as pl
 
@@ -77,14 +76,17 @@ class FoolPainterAgent(CreativeAgent):
 
         super().__init__(env)
 
-        self.mem = ListMemory(20)
+        self.mem = ListMemory(10)
         self.n = 3
 
         self.color_reference     = create_model(reference)
         self.color_palette_size  = 60
         self.color_palette       = np.array(self.pick_colors(self.color_palette_size))
 
-        self.brush_size          = random.randint(4,50) # Grid of NxN ; N = random value from 3 to 5.
+        self.min_brush_size = 15
+        self.max_brush_size = 30
+
+        self.brush_size          = random.randint(self.min_brush_size, self.max_brush_size) # Grid of NxN ; N = random value from min to max.
         self.brush               = Brush(self.brush_size, reference)
 
         self.reference = reference
@@ -113,7 +115,7 @@ class FoolPainterAgent(CreativeAgent):
         surpris, surpris_framing = self.surprisingness(artifact)
 
         framing = {'value': value_framing, 'novelty':novelty_framing, 'suprisingness' : surpris_framing}
-        evaluation = (value + novelty) / 3
+        evaluation = (value + novelty + surpris) / 3
         return evaluation, framing
 
     def value(self, artifact):
@@ -137,9 +139,9 @@ class FoolPainterAgent(CreativeAgent):
         # plt.imshow(target, interpolation='None')
         # plt.show()
 
-        similarity = self.similarity(result, target)
+        value = self.similarity(result, target)
 
-        value, matching_stroke = similarity, similarity;
+        value, matching_stroke = value, "{:.4f}".format(value)
 
         # print(value)
         return value, matching_stroke
@@ -159,7 +161,9 @@ class FoolPainterAgent(CreativeAgent):
         # Computes a value that increases depending on the layer of strokes in that position
         overpaint = self.env._layers[pos[0]: pos[0] + len(str), pos[1]: pos[1] + len(str)].mean() + 1
 
-        novelty, matching_stroke = 1/overpaint, 1/overpaint;
+        novelty = 1/overpaint
+
+        novelty, matching_stroke = novelty, "{:.4f}".format(novelty)
         return novelty, matching_stroke
 
     def surprisingness(self, artifact):
@@ -171,8 +175,23 @@ class FoolPainterAgent(CreativeAgent):
             stroke giving the minimum surprisingness.
         """
 
-        surpris, matching_stroke = 0, None;
+        accum_dif = 0
+
+        if len(self.mem.artifacts) > 0:
+
+            for mem_artifact in self.mem.artifacts:
+
+                # Accumulate the similarity of the memory elements and the stroke.
+                color_dif = np.absolute((artifact.color - mem_artifact.color)).mean()
+                accum_dif += color_dif
+
+        print(len(self.mem.artifacts))
+
+        surpris = accum_dif / (len(self.mem.artifacts) + 1 )
+
+        surpris, matching_stroke = surpris, "{:.4f}".format(surpris)
         return surpris, matching_stroke
+
 
     def similarity(self, imgA, imgB):
         """Given two images of the same size, this function compute the similarity of the pixel
@@ -201,17 +220,16 @@ class FoolPainterAgent(CreativeAgent):
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         """
         random_color = random.choice(self.color_palette[0])
-        stroke = []
-
         self.brush = Brush(self.brush_size, self.reference)
 
+        stroke = []
         for row_idx in range(len(self.brush.pattern)):
             stroke_line = []
             for col_idx in range(len(self.brush.pattern[row_idx])):
                 stroke_line.append(np.insert(random_color, 3, self.brush.pattern[row_idx][col_idx]))
             stroke.append(stroke_line)
-
         stroke = np.array(stroke)
+
         strokeArt = StrokeArtifact(self, stroke)
 
         canvas_max_x = self.env._canvas.shape[0] - len(stroke)
@@ -220,6 +238,8 @@ class FoolPainterAgent(CreativeAgent):
         random_position = [random.randint(0, canvas_max_x), random.randint(0, canvas_max_y)]
 
         strokeArt.add_position(random_position)
+        strokeArt.add_color(random_color)
+        strokeArt.add_brush(self.brush)
 
         # # Dbg
         # plt.imshow(stroke, interpolation='None')
@@ -248,6 +268,9 @@ class FoolPainterAgent(CreativeAgent):
         logger.debug("{} invented stroke: {} (eval={}, framing={})"
                      .format(self.name, max_evaluation, "-",
                              framing))
+
+        # Memorize the inveted artefact
+        self.mem.memorize(best_artifact)
         # Add evaluation and framing to the artifact
         best_artifact.add_eval(self, max_evaluation, fr=framing)
         return best_artifact
