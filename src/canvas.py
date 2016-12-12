@@ -63,12 +63,13 @@ class CanvasEnvironment(Environment):
         return self._canvas
 
     def view_canvas(self):
+        integer_canvas = np.uint8(self._canvas * 255)
 
-        img = Image.fromarray(self._canvas, 'RGBA')
+        img = Image.fromarray(integer_canvas, 'RGB')
         img.save('../output/result.png')
 
-        pl.imshow(self._canvas, interpolation='None')
-        pl.show()
+        #pl.imshow(self._canvas, interpolation='None')
+        #pl.show()
 
         return
 
