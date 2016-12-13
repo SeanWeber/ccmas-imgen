@@ -22,7 +22,7 @@ if __name__ == "__main__":
     env.init_canvas(target=target_image)
 
     # Initialize the agents
-    for i in range(3):
+    for i in range(4):
         reference_image = PROJECT_ROOT + "/media/starring-night.jpg"
         # reference_image = "../low_inspiration/" + random.choice(os.listdir("../low_inspiration/"))
         fool = agent.FoolPainterAgent(env, reference=reference_image)

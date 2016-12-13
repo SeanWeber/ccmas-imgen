@@ -11,8 +11,12 @@ from model import *
 from brush import *
 from stroke import *
 
+
 import logging
 import random
+import os
+
+from PIL import Image
 
 import matplotlib.image as im
 import matplotlib.pyplot as pl
@@ -23,6 +27,10 @@ import matplotlib.pyplot as pl
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
+
+#Debug
+PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+palette_gradient = []
 
 
 class ListMemory:
@@ -77,20 +85,23 @@ class FoolPainterAgent(CreativeAgent):
         super().__init__(env)
 
         self.mem = ListMemory(10)
-        self.n = 3
+        self.n = 2
 
+        self.innovation_freq = random.randint(1, 10) # How many steps goes after palette and brushes is updated.
+
+        print(self.innovation_freq)
+
+        self.color_palette_size  = 25
         self.color_reference     = create_model(reference)
-        self.color_palette_size  = 60
         self.color_palette       = np.array(self.pick_colors(self.color_palette_size))
 
-        self.min_brush_size = 15
+        self.min_brush_size = 3
         self.max_brush_size = 30
 
-        self.brush_size          = random.randint(self.min_brush_size, self.max_brush_size) # Grid of NxN ; N = random value from min to max.
-        self.brush               = Brush(self.brush_size, reference)
+        self.brushes_set_size = 20
+        self.brushes = [Brush(random.randint(self.min_brush_size, self.max_brush_size), reference) for i in range(self.brushes_set_size)]
 
         self.reference = reference
-
 
         # plt.imshow(self.color_palette, interpolation='None')
         # plt.imshow(self.brush.pattern, interpolation='None', cmap='gray')
@@ -100,6 +111,26 @@ class FoolPainterAgent(CreativeAgent):
     def pick_colors (self, n):
         # Return n most frequent colors from the color_palette.
         return np.array([sorted(self.color_reference, key=self.color_reference.get)[:n]])
+
+    def update_agent_sets (self, stroke=None):
+        '''Include the brush and color of the stroke in the agents brushes and colors set.
+
+        :param stroke:
+        :return:
+        '''
+        if (stroke):
+            color = stroke.color
+            brush = stroke.brush
+        else:
+            color = random.choice(list(self.color_reference.keys()))
+            brush = Brush(random.randint(self.min_brush_size, self.max_brush_size), self.reference)
+
+        # Replace a random color with the stroke's color
+        self.color_palette[0][random.randrange(0,len(self.color_palette[0]))] = color
+
+        # Replace a random brush with the stroke's brush
+        self.brushes[random.randrange(0,len(self.brushes))] = brush
+
 
     def evaluate(self, artifact):
         """Evaluate given artifact with respect to the agent's  memory
@@ -185,9 +216,7 @@ class FoolPainterAgent(CreativeAgent):
                 color_dif = np.absolute((artifact.color - mem_artifact.color)).mean()
                 accum_dif += color_dif
 
-        print(len(self.mem.artifacts))
-
-        surpris = accum_dif / (len(self.mem.artifacts) + 1 )
+        surpris = accum_dif / (len(self.mem.artifacts) + 1)
 
         surpris, matching_stroke = surpris, "{:.4f}".format(surpris)
         return surpris, matching_stroke
@@ -220,13 +249,13 @@ class FoolPainterAgent(CreativeAgent):
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         """
         random_color = random.choice(self.color_palette[0])
-        self.brush = Brush(self.brush_size, self.reference)
+        brush = random.choice(self.brushes)
 
         stroke = []
-        for row_idx in range(len(self.brush.pattern)):
+        for row_idx in range(len(brush.pattern)):
             stroke_line = []
-            for col_idx in range(len(self.brush.pattern[row_idx])):
-                stroke_line.append(np.insert(random_color, 3, self.brush.pattern[row_idx][col_idx]))
+            for col_idx in range(len(brush.pattern[row_idx])):
+                stroke_line.append(np.insert(random_color, 3, brush.pattern[row_idx][col_idx]))
             stroke.append(stroke_line)
         stroke = np.array(stroke)
 
@@ -239,7 +268,7 @@ class FoolPainterAgent(CreativeAgent):
 
         strokeArt.add_position(random_position)
         strokeArt.add_color(random_color)
-        strokeArt.add_brush(self.brush)
+        strokeArt.add_brush(brush)
 
         # # Dbg
         # plt.imshow(stroke, interpolation='None')
@@ -269,19 +298,54 @@ class FoolPainterAgent(CreativeAgent):
                      .format(self.name, max_evaluation, "-",
                              framing))
 
-        # Memorize the inveted artefact
-        self.mem.memorize(best_artifact)
-        # Add evaluation and framing to the artifact
+        # Add evaluation and framing to the artifact.
         best_artifact.add_eval(self, max_evaluation, fr=framing)
         return best_artifact
+
+    def render_palette(self):
+        '''Auxiliar function for debugging the content of the agents palette
+
+        :return:
+        '''
+        global palette_gradient
+
+        integer_canvas = np.uint8(self.color_palette * 255)
+
+        # Debug - Shows palette of agent 0.
+        if (self.name[-1] == '0'):
+            palette_gradient.append(self.color_palette[0].copy())
+            plt.imshow(palette_gradient, animated=True, interpolation='None', hold=False)
+            # plt.draw()
+            # plt.pause(0.001)
+
+            render_factor = 20
+
+            if (self.env.age % render_factor == 0):
+                plt.savefig(PROJECT_ROOT + '/output/palettes/palette_ag' + self.name[-1] + '_steps_' + str(self.env.age - render_factor) + '_'+ str(self.env.age) + '.png')
+                palette_gradient = []
 
     async def act(self):
         """Agent acts by inventing new strokes.
         """
+
+        # Update last votation winner brushes and palette with the winning stroke information.
+        if (len(self.env.artifacts) > 0):
+            if (self.env.artifacts[-1].creator == self.name):
+                self.update_agent_sets(self.env.artifacts[-1])
+
+        # After 'innovation_freq' steps, the agent learns a new color and brush.
+        if (self.env.age % self.innovation_freq == 0):
+            self.update_agent_sets()
+
         artifact = self.invent(self.n)
+
+        # Memorize the last generated stroke
         self.mem.memorize(artifact)
         # logger.debug([a.obj for a in self.mem.artifacts])
         self.env.add_candidate(artifact)
+
+        # # Debug
+        # self.render_palette();
 
 
 if __name__ == "__main__":

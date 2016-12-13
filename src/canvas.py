@@ -137,16 +137,17 @@ class CanvasEnvironment(Environment):
             value = artifacts[0][1]
             self.add_artifact(accepted)
 
+            # Paint the global canvas with the winning stroke.
             self.add_stroke(stroke=accepted.obj, position=accepted.position)
 
+            # Output/Debug
             if (self.age % 5 == 0):
                 self.view_canvas('/output/progress/in_process_' + str(self.age) + '.png')
 
-            # pl.imshow(self._canvas, interpolation='None')
-            # pl.show()
 
             logger.info("Vote winner by {}: {} (val={})"
                         .format(accepted.creator, "-", value))
+
         else:
             logger.info("No vote winner!")
         self.clear_candidates()
