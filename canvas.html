@@ -54,7 +54,20 @@
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.add_stroke">
 <code class="descname">add_stroke</code><span class="sig-paren">(</span><em>stroke</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.add_stroke"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.add_stroke" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Paints a new stroke on the canvas.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>stroke</strong> &#8211; A definiton of stroke to be added.</li>
+<li><strong>position</strong> &#8211; A left upper corner of the area where the stroke is to be done.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="canvas.CanvasEnvironment.canvas">
@@ -65,7 +78,7 @@
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.init_canvas">
 <code class="descname">init_canvas</code><span class="sig-paren">(</span><em>target=None</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.init_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.init_canvas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Funtion that initializes <cite>~src.canvas.CanvasEnvironment</cite>
+<dd><p>Funtion that initializes <a class="reference internal" href="#canvas.CanvasEnvironment" title="canvas.CanvasEnvironment"><code class="xref any py py-class docutils literal"><span class="pre">canvas.CanvasEnvironment</span></code></a>
 with approriate attribute values. This function should be run
 after create().</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -90,7 +103,25 @@ after create().</p>
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.paint_over">
 <code class="descname">paint_over</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>stroke</em>, <em>canvas=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.paint_over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.paint_over" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Paints over a pixel on the canvas.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Position of the stroke (x-axis).</li>
+<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Position of the stroke (y-axis).</li>
+<li><strong>stroke</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Definiton of stroke (brush and color).</li>
+<li><strong>canvas</strong> &#8211; A canvas to be used. If None is set, the current canvas is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A newly set value of the pixel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.prev_stroke">
@@ -99,14 +130,14 @@ after create().</p>
 
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.update_layers">
-<code class="descname">update_layers</code><span class="sig-paren">(</span><em>radius</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.update_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.update_layers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_layers</code><span class="sig-paren">(</span><em>stroke</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.update_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.update_layers" title="Permalink to this definition">¶</a></dt>
 <dd><p>When a stroke is applied on the canvas, this function updates layers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Radius of the stroke</li>
+<li><strong>stroke</strong> (<em>Artifact</em>) &#8211; Stroke element</li>
 <li><strong>position</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Position of the stroke</li>
 </ul>
 </td>
@@ -117,13 +148,31 @@ after create().</p>
 
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.view_canvas">
-<code class="descname">view_canvas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.view_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.view_canvas" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">view_canvas</code><span class="sig-paren">(</span><em>path='/home/tom/Skola-2017/ccmas-imgen/output/result.png'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.view_canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.view_canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the current state of canvas.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A path where the generated image is stored.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="canvas.CanvasEnvironment.vote">
 <code class="descname">vote</code><span class="sig-paren">(</span><em>age</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/canvas.html#CanvasEnvironment.vote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#canvas.CanvasEnvironment.vote" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Picks the most appreciated stroke and adds it in the painting.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>age</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of current iteration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

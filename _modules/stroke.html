@@ -44,25 +44,60 @@
             
   <h1>Source code for stroke</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">creamas.core</span> <span class="k">import</span> <span class="n">Artifact</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="StrokeArtifact"><a class="viewcode-back" href="../stroke.html#stroke.StrokeArtifact">[docs]</a><span class="k">class</span> <span class="nc">StrokeArtifact</span><span class="p">(</span><span class="n">Artifact</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Extended version of the `~creamas.core.artifact.Artifact`&#39;&#39;&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># This works as long as value and novelty evaluation is agent-non-dependent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value_framing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">novelty</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">novelty_framing</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Position of the `~src.stroke.StrokeArtifact` on the `~src.canvas.CanvasEnvironment`.&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;Position of the :any:`stroke.StrokeArtifact` on the :any:`canvas.CanvasEnvironment`.&#39;&#39;&#39;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Position of the :any:`stroke.StrokeArtifact` on the :any:`canvas.CanvasEnvironment`.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_color</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">brush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Position of the :any:`stroke.StrokeArtifact` on the :any:`canvas.CanvasEnvironment`.&#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span>
+
 <div class="viewcode-block" id="StrokeArtifact.add_position"><a class="viewcode-back" href="../stroke.html#stroke.StrokeArtifact.add_position">[docs]</a>    <span class="k">def</span> <span class="nf">add_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;Add position information for the `~src.stroke.StrokeArtifact`</span>
+        <span class="sd">&#39;&#39;&#39;Add position information for the :any:`stroke.StrokeArtifact`</span>
 
 <span class="sd">        :param list position: xy-coordinates of the position.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">position</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">position</span></div>
+
+<div class="viewcode-block" id="StrokeArtifact.add_color"><a class="viewcode-back" href="../stroke.html#stroke.StrokeArtifact.add_color">[docs]</a>    <span class="k">def</span> <span class="nf">add_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add color information for the :any:`stroke.StrokeArtifact`</span>
+
+<span class="sd">        :param list color: xy-coordinates of the color.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_color</span> <span class="o">=</span> <span class="n">color</span></div>
+
+<div class="viewcode-block" id="StrokeArtifact.add_brush"><a class="viewcode-back" href="../stroke.html#stroke.StrokeArtifact.add_brush">[docs]</a>    <span class="k">def</span> <span class="nf">add_brush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">brush</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add brush information for the :any:`stroke.StrokeArtifact`</span>
+
+<span class="sd">        :param list brush: xy-coordinates of the brush.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brush</span> <span class="o">=</span> <span class="n">brush</span></div></div>
 
 </pre></div>
 

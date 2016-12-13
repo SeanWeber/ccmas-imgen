@@ -54,14 +54,49 @@
 <dl class="method">
 <dt id="brush.Brush.generate_pattern">
 <code class="descname">generate_pattern</code><span class="sig-paren">(</span><em>reference</em>, <em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/brush.html#Brush.generate_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brush.Brush.generate_pattern" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Extracts a pattern from the reference image.</p>
+<p>Firstly, the image is transformed to grayscale. A random square from image
+is picked. A pattern is extracted using the edge detection (Sobel&#8217;s filter).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>reference</strong> &#8211; Reference image.</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Size of a pattern (length of its edge).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A pattern extracted from the image.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="brush.Brush.pattern">
+<code class="descname">pattern</code><a class="headerlink" href="#brush.Brush.pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pattern the brush produces.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="brush.rgb2gray">
 <code class="descclassname">brush.</code><code class="descname">rgb2gray</code><span class="sig-paren">(</span><em>rgb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/brush.html#rgb2gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#brush.rgb2gray" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Maps RGB value to grayscale.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rgb</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A definiton of RGB color.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A luminance in grayscale.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
 

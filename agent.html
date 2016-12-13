@@ -65,51 +65,93 @@ from a given artwork or randomly otherwise.</p>
 <dt id="agent.FoolPainterAgent.evaluate">
 <code class="descname">evaluate</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate given artifact with respect to the agent&#8217;s  memory
-and how useful it if for the assigned job.
-:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
-:returns:</p>
-<blockquote>
-<div>(evaluation, framing)-tuple, the framing is the combined framing of
-both the value and novelty.</div></blockquote>
+and how useful it if for the assigned job.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(evaluation, framing)-tuple, the framing is the combined framing of
+both the value and novelty.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="agent.FoolPainterAgent.generate">
 <code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.generate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate a new stroke.
-Stroke are generated mixing data memorized of patterns and colors.
-:returns: a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code></p>
+<dd><p>Generate a new stroke.</p>
+<p>Stroke are generated mixing data memorized of patterns and colors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="agent.FoolPainterAgent.invent">
 <code class="descname">invent</code><span class="sig-paren">(</span><em>n=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.invent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.invent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invent a new stroke.
-Generates multiple (n) strokes and selects the one with the highest
-evaluation.
-:param int n: Number of strokes to consider
-:returns:</p>
-<blockquote>
-<div>a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> and its
-evaluation.</div></blockquote>
+<dd><p>Invent a new stroke.</p>
+<p>Generates multiple (n) strokes and selects the one with the highest
+evaluation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of strokes to consider</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a stroke wrapped as <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> and its
+evaluation.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="agent.FoolPainterAgent.novelty">
 <code class="descname">novelty</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.novelty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.novelty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the novelty of a given artifact with respect to the artifacts
-in the agent&#8217;s memory.
-:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
-:returns:</p>
-<blockquote>
-<div>(novelty, word)-tuple, containing both the novelty value and the
-word giving the minimum novelty.</div></blockquote>
+in the agent&#8217;s memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(novelty, word)-tuple, containing both the novelty value and the
+word giving the minimum novelty.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="agent.FoolPainterAgent.pick_colors">
 <code class="descname">pick_colors</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.pick_colors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.pick_colors" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Finds n most frequent colors from the color_palette.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> &#8211; Number of colors to be picked.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array of the most frequent colors in the reference image.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.render_palette">
+<code class="descname">render_palette</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.render_palette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.render_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auxiliar function for debugging the content of the agents palette.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="agent.FoolPainterAgent.similarity">
@@ -122,12 +164,12 @@ the alpha value.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>imgA</strong> &#8211; </li>
-<li><strong>imgB</strong> &#8211; </li>
+<li><strong>imgA</strong> &#8211; Image to be compared.</li>
+<li><strong>imgB</strong> &#8211; Image to be compared.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Similarity of two images.</p>
 </td>
 </tr>
 </tbody>
@@ -138,12 +180,32 @@ the alpha value.</p>
 <dt id="agent.FoolPainterAgent.surprisingness">
 <code class="descname">surprisingness</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.surprisingness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.surprisingness" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the surprisingness of a given artifact with respect to the artifacts
-in the agent&#8217;s memory.
-:param artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated
-:returns:</p>
-<blockquote>
-<div>(novelty, word)-tuple, containing both the surprisingness value and the
-stroke giving the minimum surprisingness.</div></blockquote>
+in the agent&#8217;s memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(novelty, word)-tuple, containing both the surprisingness value and the
+stroke giving the minimum surprisingness.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="agent.FoolPainterAgent.update_agent_sets">
+<code class="descname">update_agent_sets</code><span class="sig-paren">(</span><em>stroke=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#FoolPainterAgent.update_agent_sets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.FoolPainterAgent.update_agent_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Include the brush and color of the stroke in the agents brushes and colors set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stroke</strong> &#8211; A stroke from which the new color and brush will be read.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -155,7 +217,7 @@ agent has in its vocabulary.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> &#8211; <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code> to be evaluated.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(evaluation, stroke)-tuple, containing both the evaluation and the
 stroke giving the maximum evaluation</td>
@@ -188,9 +250,15 @@ stroke giving the maximum evaluation</td>
 <code class="descname">memorize</code><span class="sig-paren">(</span><em>artifact</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agent.html#ListMemory.memorize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agent.ListMemory.memorize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Memorize an artifact into the memory.
 If the artifact is already in the memory, does nothing. If memory
-is full and a new artifact is memorized, forgets the oldest artifact.
-:param artifact: Artifact to be learned.
-:type artifact: <code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code></p>
+is full and a new artifact is memorized, forgets the oldest artifact.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>artifact</strong> (<code class="xref py py-class docutils literal"><span class="pre">Artifact</span></code>) &#8211; Artifact to be learned.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
