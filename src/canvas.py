@@ -36,7 +36,7 @@ class CanvasEnvironment(Environment):
         return self._layers
 
     def init_canvas(self, target=None, shape=None):
-        """Funtion that initializes `~src.canvas.CanvasEnvironment`
+        """Funtion that initializes :any:`canvas.CanvasEnvironment`
         with approriate attribute values. This function should be run
         after create().
 
@@ -66,6 +66,10 @@ class CanvasEnvironment(Environment):
         return self._canvas
 
     def view_canvas(self, path=PROJECT_ROOT+'/output/result.png'):
+        """Saves the current state of canvas.
+
+        :param string path: A path where the generated image is stored.
+        """
         integer_canvas = np.uint8(self._canvas * 255)
 
         img = Image.fromarray(integer_canvas, 'RGB')
@@ -74,6 +78,11 @@ class CanvasEnvironment(Environment):
         return
 
     def add_stroke(self, stroke, position):
+        """Paints a new stroke on the canvas.
+
+        :param stroke: A definiton of stroke to be added.
+        :param position: A left upper corner of the area where the stroke is to be done.
+        """
         x_offset = position[0]
         y_offset = position[1]
 
@@ -89,7 +98,6 @@ class CanvasEnvironment(Environment):
         :param Artifact stroke: Stroke element
         :param tuple position: Position of the stroke
         """
-
         self._layers[position[0]: position[0] + len(stroke), position[1]: position[1] + len(stroke)] += 1
 
     def prev_stroke(self, stroke, position):
@@ -105,6 +113,16 @@ class CanvasEnvironment(Environment):
         return tmp_canvas[x_off:(x_off + len(stroke)), y_off:(y_off + len(stroke[0]))]
 
     def paint_over(self, x, y, stroke, canvas=None):
+        """Paints over a pixel on the canvas.
+
+        :param int x: Position of the stroke (x-axis).
+        :param int y: Position of the stroke (y-axis).
+        :param int stroke: Definiton of stroke (brush and color).
+        :param canvas: A canvas to be used. If None is set, the current canvas is used.
+        
+        :returns:
+            A newly set value of the pixel.
+        """
         RED   = 0
         GRN   = 1
         BLU   = 2
@@ -129,6 +147,10 @@ class CanvasEnvironment(Environment):
         return canvas[x][y]
 
     def vote(self, age):
+        """Picks the most appreciated stroke and adds it in the painting.
+
+        :param int age: The number of current iteration.
+        """
         artifacts = self.perform_voting(method='mean')
         if len(artifacts) > 0:
             accepted = artifacts[0][0]
@@ -148,7 +170,7 @@ class CanvasEnvironment(Environment):
             logger.info("No vote winner!")
         self.clear_candidates()
 
-# Example usage
+# Example of usage
 if __name__ == "__main__":
     env = CanvasEnvironment.create(("localhost", 5555))
     # initializes a white canvas with size 512x512

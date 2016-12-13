@@ -7,6 +7,11 @@ import random
 
 
 def rgb2gray(rgb):
+    """Maps RGB value to grayscale.
+
+    :param list rgb: A definiton of RGB color.
+    :returns: A luminance in grayscale.
+    """
     r, g, b = rgb[:, :, 0], rgb[:, :, 1], rgb[:, :, 2]
     gray = 0.2989 * r + 0.5870 * g + 0.1140 * b
 
@@ -29,9 +34,21 @@ class Brush:
 
     @property
     def pattern(self):
+        """A pattern the brush produces.
+        """
         return self._pattern
 
     def generate_pattern(self, reference, size):
+        """Extracts a pattern from the reference image.
+
+        Firstly, the image is transformed to grayscale. A random square from image
+        is picked. A pattern is extracted using the edge detection (Sobel's filter).
+
+        :param reference: Reference image.
+        :param int size: Size of a pattern (length of its edge).
+        :returns:
+            A pattern extracted from the image.
+        """
         # Import image from reference and convert it to grayscale.
         img = mpimg.imread(reference)
         gray = np.mean(img, -1)

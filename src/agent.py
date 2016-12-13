@@ -1,6 +1,7 @@
 """
 .. py:module:: mas_memory
     :platform: Unix
+
 An example of an agent's memory model and how an agent can learn (learn here is
 used in a very weak sense) new artifacts to it from domain.
 """
@@ -59,6 +60,7 @@ class ListMemory:
         """Memorize an artifact into the memory.
         If the artifact is already in the memory, does nothing. If memory
         is full and a new artifact is memorized, forgets the oldest artifact.
+        
         :param artifact: Artifact to be learned.
         :type artifact: :class:`~creamas.core.artifact.Artifact`
         """
@@ -107,14 +109,18 @@ class FoolPainterAgent(CreativeAgent):
         logger.debug("Agent started: {}".format(reference))
 
     def pick_colors (self, n):
-        # Return n most frequent colors from the color_palette.
+        """Finds n most frequent colors from the color_palette.
+
+        :param n: Number of colors to be picked.
+        :returns:
+            Array of the most frequent colors in the reference image.
+        """
         return np.array([sorted(self.color_reference, key=self.color_reference.get)[:n]])
 
     def update_agent_sets (self, stroke=None):
         '''Include the brush and color of the stroke in the agents brushes and colors set.
 
-        :param stroke:
-        :return:
+        :param stroke: A stroke from which the new color and brush will be read.
         '''
         if (stroke):
             color = stroke.color
@@ -133,7 +139,8 @@ class FoolPainterAgent(CreativeAgent):
     def evaluate(self, artifact):
         """Evaluate given artifact with respect to the agent's  memory
         and how useful it if for the assigned job.
-        :param artifact: :class:`~creamas.core.Artifact` to be evaluated
+
+        :param artifact: :class:`~creamas.core.Artifact` to be evaluated.
         :returns:
             (evaluation, framing)-tuple, the framing is the combined framing of
             both the value and novelty.
@@ -165,7 +172,7 @@ class FoolPainterAgent(CreativeAgent):
         """Compute the value of a given artifact with respect to the stroke the
         agent has in its vocabulary.
 
-        :param artifact: :class:`~creamas.core.Artifact` to be evaluated
+        :param artifact: :class:`~creamas.core.Artifact` to be evaluated.
         :returns:
             (evaluation, stroke)-tuple, containing both the evaluation and the
             stroke giving the maximum evaluation
@@ -192,6 +199,7 @@ class FoolPainterAgent(CreativeAgent):
     def novelty(self, artifact):
         """Compute the novelty of a given artifact with respect to the artifacts
         in the agent's memory.
+
         :param artifact: :class:`~creamas.core.Artifact` to be evaluated
         :returns:
             (novelty, word)-tuple, containing both the novelty value and the
@@ -212,6 +220,7 @@ class FoolPainterAgent(CreativeAgent):
     def surprisingness(self, artifact):
         """Compute the surprisingness of a given artifact with respect to the artifacts
         in the agent's memory.
+
         :param artifact: :class:`~creamas.core.Artifact` to be evaluated
         :returns:
             (novelty, word)-tuple, containing both the surprisingness value and the
@@ -239,9 +248,10 @@ class FoolPainterAgent(CreativeAgent):
         values. The function compute the differences of RGB values of a pixel and weight it with
         the alpha value.
 
-        :param imgA:
-        :param imgB:
-        :return:
+        :param imgA: Image to be compared.
+        :param imgB: Image to be compared.
+        :returns:
+            Similarity of two images. 
         """
         #
         # print(imgA)
@@ -257,7 +267,9 @@ class FoolPainterAgent(CreativeAgent):
 
     def generate(self):
         """Generate a new stroke.
+
         Stroke are generated mixing data memorized of patterns and colors.
+
         :returns: a stroke wrapped as :class:`~creamas.core.artifact.Artifact`
         """
         random_color = random.choice(self.color_palette[0])
@@ -290,8 +302,10 @@ class FoolPainterAgent(CreativeAgent):
 
     def invent(self, n=20):
         """Invent a new stroke.
+
         Generates multiple (n) strokes and selects the one with the highest
         evaluation.
+
         :param int n: Number of strokes to consider
         :returns:
             a stroke wrapped as :class:`~creamas.core.artifact.Artifact` and its
@@ -315,9 +329,7 @@ class FoolPainterAgent(CreativeAgent):
         return best_artifact
 
     def render_palette(self):
-        '''Auxiliar function for debugging the content of the agents palette
-
-        :return:
+        '''Auxiliar function for debugging the content of the agents palette.
         '''
         global palette_gradient
 
