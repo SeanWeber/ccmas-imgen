@@ -56,3 +56,19 @@ Conclusion
 We created a multi-agent system that is able to recreate images in a creative way. The example outputs show that generated images become more and more dissimilar to the target image as we use multiple reference images.
 
 Also, generating images require quite heavy computational power. Even better results might be achieved, if we could afford running a simulation with a larger number of agents and more variable size of brushes.
+
+What pros and cons does your multi-agent system implementation have?
+--------------------------------------------------------------------
+
+Pros:
+
+* It is easy to prove correctness of the results (just by looking at the resulting image)
+* Posibility of substantial improvement in performance if the code gets refactored to work on a GPU.
+* Results are unexpected, so it is interesting to test the system with different configurations.
+* If evaluated as a whole, the system is close to generate creative results.
+
+Cons:
+
+* It takes long time to generate an image.
+* No presence of generalization or creative behaviour in individual agents. They evince the expected behaviour of their design.
+* Color of canvas affects the system behaviour.
