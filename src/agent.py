@@ -139,9 +139,23 @@ class FoolPainterAgent(CreativeAgent):
             both the value and novelty.
         """
 
-        value, value_framing     = self.value(artifact)
-        novelty, novelty_framing = self.novelty(artifact)
         surpris, surpris_framing = self.surprisingness(artifact)
+
+        # This works as long as value and novelty evaluation is agent-non-dependent
+        if artifact.value == None:
+            value, value_framing = self.value(artifact)
+            artifact.value, artifact.value_framing = value, value_framing
+        else:
+            value = artifact.value
+            value_framing = artifact.value_framing
+
+        # This works as long as value and novelty evaluation is agent-non-dependent
+        if artifact.novelty == None:
+            novelty, novelty_framing = self.novelty(artifact)
+            artifact.novelty, artifact.novelty_framing = novelty, novelty_framing
+        else:
+            novelty = artifact.novelty
+            novelty_framing = artifact.novelty_framing
 
         framing = {'value': value_framing, 'novelty':novelty_framing, 'suprisingness' : surpris_framing}
         evaluation = (value + novelty + surpris) / 3

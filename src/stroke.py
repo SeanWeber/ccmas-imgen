@@ -12,6 +12,12 @@ class StrokeArtifact(Artifact):
         self._color = []
         self._brush = []
 
+        # This works as long as value and novelty evaluation is agent-non-dependent
+        self.value = None
+        self.value_framing = None
+        self.novelty = None
+        self.novelty_framing = None
+
     @property
     def position(self):
         '''Position of the `~src.stroke.StrokeArtifact` on the `~src.canvas.CanvasEnvironment`.'''

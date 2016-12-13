@@ -46,7 +46,7 @@ class Brush:
 
         slice = gray[slice_center_y: slice_center_y + size, slice_center_x: slice_center_x + size]
 
-        # Detects border to generate the pattern of the brush
+        # # Detects border to generate the pattern of the brush
         dx = ndimage.sobel(slice, 0)  # horizontal derivative
         dy = ndimage.sobel(slice, 1)  # vertical derivative
         pattern = np.hypot(dx, dy)    # grayscale slice with border detection
