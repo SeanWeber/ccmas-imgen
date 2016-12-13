@@ -7,6 +7,5 @@ src
    agent
    brush
    canvas
-   main
    model
    stroke
