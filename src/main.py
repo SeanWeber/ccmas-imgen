@@ -16,7 +16,7 @@ if __name__ == "__main__":
     np.set_printoptions(threshold=np.nan)
 
     # Selects target image.
-    target_image = PROJECT_ROOT + "/media/mona_lisa.jpg"
+    target_image = PROJECT_ROOT + "/target/mona_lisa.jpg"
     inspiration_folder = PROJECT_ROOT + "/media/"
     output_folder = PROJECT_ROOT + "/output/result.png"
 
@@ -38,13 +38,13 @@ if __name__ == "__main__":
     env.init_canvas(target=target_image)
 
     # Initialize the agents
-    for i in range(3):
+    for i in range(4):
         reference_image = inspiration_folder + random.choice(os.listdir(inspiration_folder))
         fool = agent.FoolPainterAgent(env, reference=reference_image)
 
     # Run the simulation
     sim = Simulation(env, log_folder='./logs', callback=env.vote)
-    sim.async_steps(10)
+    sim.async_steps(8000)
     sim.end()
 
     # View the canvas

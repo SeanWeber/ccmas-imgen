@@ -85,11 +85,9 @@ class FoolPainterAgent(CreativeAgent):
         super().__init__(env)
 
         self.mem = ListMemory(10)
-        self.n = 2
+        self.n = 3
 
         self.innovation_freq = random.randint(1, 10) # How many steps goes after palette and brushes is updated.
-
-        print(self.innovation_freq)
 
         self.color_palette_size  = 25
         self.color_reference     = create_model(reference)
@@ -318,7 +316,7 @@ class FoolPainterAgent(CreativeAgent):
             # plt.draw()
             # plt.pause(0.001)
 
-            render_factor = 20
+            render_factor = 200
 
             if (self.env.age % render_factor == 0):
                 plt.savefig(PROJECT_ROOT + '/output/palettes/palette_ag' + self.name[-1] + '_steps_' + str(self.env.age - render_factor) + '_'+ str(self.env.age) + '.png')
@@ -344,8 +342,8 @@ class FoolPainterAgent(CreativeAgent):
         # logger.debug([a.obj for a in self.mem.artifacts])
         self.env.add_candidate(artifact)
 
-        # # Debug
-        # self.render_palette();
+        # Debug - Disable next line to not render palette images (output/palettes files)
+        self.render_palette();
 
 
 if __name__ == "__main__":
