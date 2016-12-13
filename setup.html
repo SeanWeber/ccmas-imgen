@@ -75,12 +75,26 @@
 </div>
 <div class="section" id="running-the-application">
 <h2>4.3. Running the Application<a class="headerlink" href="#running-the-application" title="Permalink to this headline">¶</a></h2>
-<p>The application is started by running <cite>main.py</cite> that can be found in the <cite>src</cite> folder. Currently, it does not need any arguments because all the settings are being set in the code.</p>
+<p>The application is started by running <cite>main.py</cite> that can be found in the <cite>src</cite> folder. It supports the following command line arguments:</p>
+<ul class="simple">
+<li>&#8211;target <cite>path/to/target/image.png</cite></li>
+<li>&#8211;inspire <cite>path/to/inspiration/folder</cite></li>
+<li>&#8211;output <cite>folder/for/output</cite></li>
+<li>&#8211;port <cite>port/for/creamas</cite></li>
+<li>&#8211;agents <cite>Number of agents</cite></li>
+<li>&#8211;steps <cite>Number of steps in simulation</cite></li>
+</ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen$ <span class="nb">cd</span> src
-<span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen/src$ python main.py
+<span class="o">(</span>venv<span class="o">)</span> ~/ccmas-imgen/src$ python main.py <span class="se">\</span>
+        /../media/starring-night.png <span class="se">\</span>
+        /../inspiration <span class="se">\</span>
+        /../output <span class="se">\</span>
+        <span class="m">5555</span> <span class="se">\</span>
+        <span class="m">5</span> <span class="se">\</span>
+        10000
 </pre></div>
 </div>
-<p>After executing the code above, the simulation is started. When it is finished, the final generated image is displayed.</p>
+<p>After executing the code above, the simulation is started. Each agent is given a random image from the inspiring folder. When the simulation is finished, the final generated image is stored in the output folder.</p>
 </div>
 </div>
 

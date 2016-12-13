@@ -59,10 +59,10 @@
 </div>
 <div class="section" id="structure-of-implementation">
 <h2>2.2. Structure of implementation<a class="headerlink" href="#structure-of-implementation" title="Permalink to this headline">¶</a></h2>
-<p>The system is run by the main method in the <a class="reference internal" href="main.html"><span class="doc">main module</span></a>. An instance of <a class="reference internal" href="canvas.html"><span class="doc">canvas module</span></a> is created with a set of agents (a canvas is empty after initialization). The simulation is started then.</p>
+<p>The system is run by the main method in the <a class="reference internal" href="main.html"><span class="doc">main module</span></a>. An instance of <a class="reference internal" href="canvas.html"><span class="doc">canvas module</span></a> is created during the initialisation (a canvas is empty after initialization). A set of agents is generated. Each agent receives a reference image. It uses the reference image to generate a palette and a set of brushes.</p>
 <p>The simulation is run in iterations. In every iteration, each agent invents a new stroke and add it as a candidate to the environment. A candidate stroke is invented by generating a set of strokes and submitting the one with the maximum evaluation score. The score constists of three components - surprisingness, novelty and value. A candidate stroke is then added to an agent&#8217;s memory.</p>
 <p>Agents vote for the best stroke which is then added to the canvas. A single stroke is added in each iteration.</p>
-<p>After the last simulation step, the result is displayed to the user.</p>
+<p>After the last simulation step, the result is stored in the output folder.</p>
 </div>
 </div>
 

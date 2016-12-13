@@ -47,16 +47,16 @@
   <div class="section" id="project-goals">
 <h1>1. Project goals<a class="headerlink" href="#project-goals" title="Permalink to this headline">¶</a></h1>
 <p>The main goal of our project is to create a creative multi-agent system that paints images.</p>
-<p>Each agent receives an image from the inspiring set. Based on the image, an agent generates a palette of colors and a set of brushes.</p>
-<p>Agents share a common canvas. In every iteration, each agent draws a stroke in the canvas using one of its brushes and a color from its palette. Every agent&#8217;s goal is to propagate the style of &#8216;his&#8217; image into the final painting.</p>
-<p>The system uses two-level evaluation. Firstly, each agent is able to evaluate value, novelty and surprisingness of a stroke. Secondly, the environment is able to estimate the quality of the agents&#8217; painting. This allows us to compare results from different sets of agents (and different runs).</p>
+<p>Each agent receives an image from the inspiring set. Based on the image (reference image), an agent generates a palette of colors and a set of brushes. A brush extracts information about patterns in the reference image, specifically about edges. The agent tries to recreate the target image using its tools.</p>
+<p>Agents share a common canvas. In every iteration, each agent paints a stroke on the canvas using one of its brushes with a color from its palette. Every agent&#8217;s goal is to propagate the style of &#8216;his&#8217; image into the final painting.</p>
+<p>Each agent is able to evaluate value, novelty and surprisingness of a stroke. The value is defined as a similarity of the stroke to the area of the image where stroke should be painted. The novelty is measured according to the position in target image. If there are already many strokes painted in that position, the novelty value is low. Surprisingness is defined as a similarity to strokes the agent has in its memory.</p>
 <p>This process is visualised in the diagram.</p>
 <img alt="_images/diagram.png" src="_images/diagram.png" />
 <div class="section" id="why-is-the-system-creative">
 <h2>1.1. Why is the system creative?<a class="headerlink" href="#why-is-the-system-creative" title="Permalink to this headline">¶</a></h2>
-<p>Even though each agent tries to recreate its image which could be considered as a mere generation, we can say that the system as a whole is creative.</p>
-<p>Firstly, each agent tries to generalise the information that is contained in its image data. Agent extracts the most frequent colours in the image. Also, new strokes aren&#8217;t just parts of the original image but instead they are expressed as brushes of various shapes.</p>
-<p>Secondly, the target image is painted by a set of agents. These agents have different opinions on how the image should look like, but at the same time, they share a common evaluation function. This function ensures that the new image is valuable. Also as there are multiple agents in the system, a newly produced image should show novelty.</p>
+<p>Even though each agent tries to recreate the target image which could be considered as a mere generation, we can say that the system as a whole is creative.</p>
+<p>Firstly, each agent tries to generalise the information that is contained in its reference image data. Agent extracts the most frequent colours in the reference image. Also, new strokes are not just parts of the reference image but instead they are expressed as brushes of various shapes.</p>
+<p>Secondly, the target image is painted by a set of agents. These agents have different opinions on how the image should look like, but at the same time, they share a common evaluation scheme. This scheme ensures that the new image is valuable. Also as there are multiple agents in the system, a newly produced image should show novelty.</p>
 </div>
 <div class="section" id="elements-of-the-system">
 <h2>1.2. Elements of the system<a class="headerlink" href="#elements-of-the-system" title="Permalink to this headline">¶</a></h2>
@@ -87,21 +87,14 @@
 <h3>1.2.4. Memory model<a class="headerlink" href="#memory-model" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>The system uses a simple ListMemory model.</li>
-<li>An agent remembers last n strokes and try to avoid repetition of the same strokes.</li>
+<li>Agent remembers last n strokes and try to avoid repetition of the same strokes.</li>
 <li>This is another source of novelty in the system.</li>
 </ul>
 </div>
-<div class="section" id="interactions">
-<h3>1.2.5. Interactions<a class="headerlink" href="#interactions" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>The system contains a communication schema that allows agents to communicate with each other.</li>
-<li>An agent can request other agent&#8217;s opinion about its stroke.</li>
-</ul>
-</div>
 <div class="section" id="inspiring-set">
-<h3>1.2.6. Inspiring set<a class="headerlink" href="#inspiring-set" title="Permalink to this headline">¶</a></h3>
+<h3>1.2.5. Inspiring set<a class="headerlink" href="#inspiring-set" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>A predefined set of images. An agent defines its brushes and palette based on an image from this set.</li>
+<li>A predefined set of reference images. An agent defines its brushes and palette based on an image from this set.</li>
 </ul>
 </div>
 </div>
