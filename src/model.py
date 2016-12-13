@@ -4,7 +4,8 @@ import numpy as np
 
 
 def create_model(file_name):
-    """
+    """Computes a distribution of colors in the image.
+
     :param str file_name: Name of the image file
     :returns:
      Dictionary, where keys are RGB-values and items their probabilities

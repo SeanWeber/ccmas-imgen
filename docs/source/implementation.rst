@@ -16,10 +16,10 @@ In order to keep the implementation on a reasonable level of complexity, we have
 
 Structure of implementation
 ===========================
-The system is run by the main method in the :doc:`main`. An instance of :doc:`canvas` is created with a set of agents (a canvas is empty after initialization). The simulation is started then.
+The system is run by the main method in the :doc:`main`. An instance of :doc:`canvas` is created during the initialisation (a canvas is empty after initialization). A set of agents is generated. Each agent receives a reference image. It uses the reference image to generate a palette and a set of brushes.
 
 The simulation is run in iterations. In every iteration, each agent invents a new stroke and add it as a candidate to the environment. A candidate stroke is invented by generating a set of strokes and submitting the one with the maximum evaluation score. The score constists of three components - surprisingness, novelty and value. A candidate stroke is then added to an agent's memory. 
 
 Agents vote for the best stroke which is then added to the canvas. A single stroke is added in each iteration.
 
-After the last simulation step, the result is displayed to the user.
+After the last simulation step, the result is stored in the output folder.

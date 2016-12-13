@@ -4,11 +4,11 @@ Project goals
 
 The main goal of our project is to create a creative multi-agent system that paints images.
 
-Each agent receives an image from the inspiring set. Based on the image, an agent generates a palette of colors and a set of brushes.
+Each agent receives an image from the inspiring set. Based on the image (reference image), an agent generates a palette of colors and a set of brushes. A brush extracts information about patterns in the reference image, specifically about edges. The agent tries to recreate the target image using its tools.
 
-Agents share a common canvas. In every iteration, each agent draws a stroke in the canvas using one of its brushes and a color from its palette. Every agent's goal is to propagate the style of 'his' image into the final painting.
+Agents share a common canvas. In every iteration, each agent paints a stroke on the canvas using one of its brushes with a color from its palette. Every agent's goal is to propagate the style of 'his' image into the final painting.
 
-The system uses two-level evaluation. Firstly, each agent is able to evaluate value, novelty and surprisingness of a stroke. Secondly, the environment is able to estimate the quality of the agents' painting. This allows us to compare results from different sets of agents (and different runs).
+Each agent is able to evaluate value, novelty and surprisingness of a stroke. The value is defined as a similarity of the stroke to the area of the image where stroke should be painted. The novelty is measured according to the position in target image. If there are already many strokes painted in that position, the novelty value is low. Surprisingness is defined as a similarity to strokes the agent has in its memory.
 
 This process is visualised in the diagram.
 
@@ -17,11 +17,11 @@ This process is visualised in the diagram.
 Why is the system creative?
 ===========================
 
-Even though each agent tries to recreate its image which could be considered as a mere generation, we can say that the system as a whole is creative. 
+Even though each agent tries to recreate the target image which could be considered as a mere generation, we can say that the system as a whole is creative. 
 
-Firstly, each agent tries to generalise the information that is contained in its image data. Agent extracts the most frequent colours in the image. Also, new strokes aren't just parts of the original image but instead they are expressed as brushes of various shapes.
+Firstly, each agent tries to generalise the information that is contained in its reference image data. Agent extracts the most frequent colours in the reference image. Also, new strokes are not just parts of the reference image but instead they are expressed as brushes of various shapes.
 
-Secondly, the target image is painted by a set of agents. These agents have different opinions on how the image should look like, but at the same time, they share a common evaluation function. This function ensures that the new image is valuable. Also as there are multiple agents in the system, a newly produced image should show novelty.
+Secondly, the target image is painted by a set of agents. These agents have different opinions on how the image should look like, but at the same time, they share a common evaluation scheme. This scheme ensures that the new image is valuable. Also as there are multiple agents in the system, a newly produced image should show novelty.
 
 Elements of the system
 ======================
@@ -48,14 +48,9 @@ Environment (= Canvas)
 Memory model
 ------------
 * The system uses a simple ListMemory model.
-* An agent remembers last n strokes and try to avoid repetition of the same strokes.
+* Agent remembers last n strokes and try to avoid repetition of the same strokes.
 * This is another source of novelty in the system.
-
-Interactions
-------------
-* The system contains a communication schema that allows agents to communicate with each other.
-* An agent can request other agent's opinion about its stroke.
 
 Inspiring set
 -------------
-* A predefined set of images. An agent defines its brushes and palette based on an image from this set.
+* A predefined set of reference images. An agent defines its brushes and palette based on an image from this set.

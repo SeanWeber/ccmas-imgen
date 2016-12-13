@@ -35,11 +35,25 @@ Access the project folder and install all the requirements using pip
 Running the Application
 -----------------------
 
-The application is started by running `main.py` that can be found in the `src` folder. Currently, it does not need any arguments because all the settings are being set in the code.
+The application is started by running `main.py` that can be found in the `src` folder. It supports the following command line arguments:
+
+* --target `path/to/target/image.png`
+* --inspire `path/to/inspiration/folder`
+* --output `folder/for/output`
+* --port `port/for/creamas`
+* --agents `Number of agents`
+* --steps `Number of steps in simulation`
 
 .. code-block:: bash
 
 	(venv) ~/ccmas-imgen$ cd src
-	(venv) ~/ccmas-imgen/src$ python main.py
+	(venv) ~/ccmas-imgen/src$ python main.py \ 
+		/../media/starring-night.png \
+		/../inspiration \
+		/../output \
+		5555 \
+		5 \
+		10000
 
-After executing the code above, the simulation is started. When it is finished, the final generated image is displayed.
+
+After executing the code above, the simulation is started. Each agent is given a random image from the inspiring folder. When the simulation is finished, the final generated image is stored in the output folder.
