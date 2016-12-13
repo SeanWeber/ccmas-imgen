@@ -18,9 +18,10 @@ if __name__ == "__main__":
     # Selects target image.
     target_image = PROJECT_ROOT + "/media/mona_lisa.jpg"
     inspiration_folder = PROJECT_ROOT + "/media/"
+    output_folder = PROJECT_ROOT + "/output/result.png"
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["target=", "inspire="])
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["target=", "inspire=", "output="])
     except getopt.GetoptError:
         print("Error: Bad arguments")
         sys.exit(2)
@@ -29,6 +30,8 @@ if __name__ == "__main__":
             target_image = arg
         elif opt == '--inspire':
             inspiration_folder = arg
+        elif opt == '--output':
+            output_folder = arg
 
     # initializes a canvas
     env = canvas.CanvasEnvironment.create(("localhost", 5555))
@@ -45,7 +48,7 @@ if __name__ == "__main__":
     sim.end()
 
     # View the canvas
-    env.view_canvas()
+    env.view_canvas(output_folder)
 
     str = fool.generate()
 
